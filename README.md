@@ -1,6 +1,7 @@
 # Soccer Web Application
 
 This is the backed part of the web application.
+Using NODE.JS + EXPRESS.JS, MongoDB.
 
 ## Architecture
 contains the following layers:
