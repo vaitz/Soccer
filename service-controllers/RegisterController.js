@@ -1,25 +1,17 @@
 var express = require("express");
-const bcrypt = require("bcrypt");
 var router = express.Router();
 const RefereeRegister = require('../domain-usecases/RefereeRegister');
 
 router.post('',async (req, res) => {
     let { userName, password, firstName, lastName, accountType } = req.body;
-    let hash_password = bcrypt.hashSync(
-        password,
-        parseInt(process.env.bcrypt_saltRounds)
-    );
-
-
-
     if(accountType == "Referee"){
         let refType = req.body.refType;
-        let ans =await RefereeRegister.register(userName, hash_password, firstName, lastName, refType);
+        let msg = await RefereeRegister.register(userName, password, firstName, lastName, refType);
         //status
-        if(ans){
-            res.sendStatus(201);
+        if(msg == 'Referee added to the DB'){
+            res.status(201).send({ message: msg, success: true });
         }else{
-            res.sendStatus(400);
+            res.status(400).send({ message: msg, success: false });
         }
     }
 

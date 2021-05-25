@@ -1,5 +1,5 @@
-// const mongoose = require('mongoose');
 const Referee = require('./entities/Referee');
+const User = require('./entities/User');
 
 const {MongoClient} = require('mongodb');
 
@@ -15,9 +15,9 @@ async function makeDb () {
 }
 
 // find
-async function findByUserName(username){
+async function findUserByUserName(username){
     const DB = await makeDb();
-    const result = await DB.collection("referees").find({userName:username})
+    const result = await DB.collection("users").find({userName:username})
     const found = await result.toArray()
     if (found.length === 0) {
       return false;
@@ -26,21 +26,28 @@ async function findByUserName(username){
 }
 
 // insert
-async function insertRefereeUser(userName, password, firstName, lastName, refType){
+async function insertUser(userName, password){
     const DB = await makeDb();
-    let newReferee = new Referee(userName, password, firstName, lastName, refType);
+    let newUser = new User(userName, password);
     
-    await DB.collection("referees").insertOne(newReferee)   
+    await DB.collection("users").insertOne(newUser);
     return true;
 }
+
+async function insertRefereeUser(userName, password, firstName, lastName, refType){
+    const DB = await makeDb();
+    let newReferee = new Referee(userName, password, firstName, lastName, refType);    
+    await DB.collection("referees").insertOne(newReferee);
+    return true;
+}
+
+
 
 // update
 
 // delete
 
 
-
-// exports.findByUserName = findByUserName;
-// exports.getDB = getDB;
+exports.findUserByUserName = findUserByUserName;
+exports.insertUser = insertUser;
 exports.insertRefereeUser = insertRefereeUser;
-exports.findByUserName = findByUserName;
