@@ -4,12 +4,9 @@ app.use(express.json())
 const morgan = require('morgan');
 require("dotenv/config" );
 app.use(morgan('dev'));
-const accessDB = require('../data-access/soccerDB');
+// const accessDB = require('../data-access/soccerDB');
 
 const port = process.env.PORT || "3000";
-
-
-
 
 app.use((req, res, next) => {
   res.header('Access-Control-Allow-Origin', '*');
@@ -26,50 +23,46 @@ app.use((req, res, next) => {
 
 
 
-app.use(async function (req, res, next) {
-  console.log("connect to MongoDB");
-  let DB = accessDB.connectDB();
-  req.DB = DB;
-  next();
-  // if not connected?
-});
+// // connect to DB and add it to the request (save for later use)
+// app.use(async function (req, res, next) {
+//   console.log("connected to DB");
+//   if(req.DB){
+//     next();
+//   }else{
+//     let DB = accessDB.connectDB();
+//     // if not connected?
+//     req.DB = DB;
+//     next();
+//   }
+  
+// });
 
 const registerController = require('./service-controllers/RegisterController');
 app.use("/register", registerController);
 
-//   const userRoutes = require('./routes/users/user');
-//   app.use("/user", userRoutes);
-//   const teamRoutes = require('./routes/team');
-//   app.use("/team", teamRoutes);
-//   const refereeRoutes = require('./routes/users/referee');
-//   app.use("/referee", refereeRoutes);
-//   const coachRoutes = require('./routes/users/coach');
-//   app.use("/coach", coachRoutes);
-//   const playerRoutes = require('./routes/users/player');
-//   app.use("/player", playerRoutes);
-//   const teamOwnerRoutes = require('./routes/users/teamOwner');
-//   app.use("/teamowner", teamOwnerRoutes);
-//   const teamMangerRoutes = require('./routes/users/teamManger');
-//   app.use("/teammanger", teamMangerRoutes);
-//   const representativeFootballAssociationRoutes = require('./routes/users/representativeFootballAssociation');
-//   app.use("/representFA", representativeFootballAssociationRoutes);
-//   const leagueRoutes = require('./routes/league');
-//   app.use("/league", leagueRoutes);
-//   const seasonRoutes = require('./routes/season');
-//   app.use("/season", seasonRoutes);
-//   const matchRoutes = require('./routes/match');
-//   app.use("/match", matchRoutes);
 
 
+//if non of the above:
+app.use((req, res) => {
+  res.sendStatus(404);
+});
 
-  app.listen(port, () => {
-    console.log(`Server listen on port ${port}`);
-  });
-  
-  app.use((req, res, next) => {
-    const error = new Error(`Not found | Invalid url path: ${req.headers.host}${req.url}`);
-    error.status = 404;
-    next(error);
-  });
+app.use(function (err, req, res, next) {
+  console.error(err);
+  res
+    .status(err.status || 500)
+    .send({ message: err.message || "Internal Server Error", success: false });
+});
 
-  module.exports = app;
+const server = app.listen(port, () => {
+  console.log(`Server listen on port ${port}`);
+});
+
+process.on("SIGINT", function () {
+  if (server) {
+    server.close(() => console.log("server closed"));
+  }
+  process.exit();
+});
+
+module.exports = app;
