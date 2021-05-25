@@ -1,20 +1,21 @@
 const Referee = require('./entities/Referee');
 const User = require('./entities/User');
-
 const {MongoClient} = require('mongodb');
 
-const uri = "mongodb+srv://tom:1234@soccersystem.7wihy.mongodb.net/test?authSource=admin&replicaSet=atlas-11jrfq-shard-0&readPreference=primary&appname=MongoDB%20Compass&ssl=true"
-const dbName = "soccerSystemDB";
-const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true  })
+// constants for the DB connection
+const URI = "mongodb+srv://tom:1234@soccersystem.7wihy.mongodb.net/test?authSource=admin&replicaSet=atlas-11jrfq-shard-0&readPreference=primary&appname=MongoDB%20Compass&ssl=true"
+const DB_NAME = "soccerSystemDB";
+const CLIENT = new MongoClient(URI, { useNewUrlParser: true, useUnifiedTopology: true  })
 
+// returns the DB- if its is not connected it creates the connection
 async function makeDb () {
-  if (!client.isConnected()) {
-    await client.connect();
+  if (!CLIENT.isConnected()) {
+    await CLIENT.connect();
   }
-  return client.db(dbName);
+  return CLIENT.db(DB_NAME);
 }
 
-// find
+// find user in the users collection by username
 async function findUserByUserName(username){
     const DB = await makeDb();
     const result = await DB.collection("users").find({userName:username})
@@ -25,7 +26,7 @@ async function findUserByUserName(username){
     return true;
 }
 
-// insert
+// insert general user to users collection
 async function insertUser(userName, password){
     const DB = await makeDb();
     let newUser = new User(userName, password);
@@ -34,6 +35,7 @@ async function insertUser(userName, password){
     return true;
 }
 
+// insert referee user to referees collection
 async function insertRefereeUser(userName, password, firstName, lastName, refType){
     const DB = await makeDb();
     let newReferee = new Referee(userName, password, firstName, lastName, refType);    
@@ -48,6 +50,7 @@ async function insertRefereeUser(userName, password, firstName, lastName, refTyp
 // delete
 
 
+// expose the functions that needs access outside the file (for the domain layer)
 exports.findUserByUserName = findUserByUserName;
 exports.insertUser = insertUser;
 exports.insertRefereeUser = insertRefereeUser;

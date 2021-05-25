@@ -9,10 +9,12 @@ async function register(userName, password, firstName, lastName, refType){
         return "Missing fields, make sure you entered the following: userName, password, firstName, lastName, refType.";
     }
 
+    // check if the password are according to the rules
     if(password.length < 6 || !(/\d/.test(password) && /[a-zA-Z]/.test(password))){
         return "The password entered is not according to the rules: more then 6 characters or equal, contains at least one letter and one digit.";
     }
 
+    // change the password to hash- security
     let hash_password = bcrypt.hashSync(
         password,
         parseInt(process.env.bcrypt_saltRounds)
@@ -34,4 +36,5 @@ async function register(userName, password, firstName, lastName, refType){
 
 }
 
+// expose the function that needs access outside the file (for the service layer)
 exports.register = register;

@@ -4,7 +4,7 @@ app.use(express.json())
 const morgan = require('morgan');
 require("dotenv/config" );
 app.use(morgan('dev'));
-// const accessDB = require('../data-access/soccerDB');
+
 
 const port = process.env.PORT || "3000";
 
@@ -21,21 +21,6 @@ app.use((req, res, next) => {
   next();
 });
 
-
-
-// // connect to DB and add it to the request (save for later use)
-// app.use(async function (req, res, next) {
-//   console.log("connected to DB");
-//   if(req.DB){
-//     next();
-//   }else{
-//     let DB = accessDB.connectDB();
-//     // if not connected?
-//     req.DB = DB;
-//     next();
-//   }
-  
-// });
 
 const registerController = require('./service-controllers/RegisterController');
 app.use("/register", registerController);
