@@ -20,8 +20,6 @@ async function findUserByUserName(username){
     const DB = await makeDb();
     const result = await DB.collection("users").find({userName:username})
     const found = await result.toArray()
-    console.log(found);
-    console.log(result.password);
     if (found.length === 0) {
       return false;
     }
@@ -33,7 +31,6 @@ async function getPasswordByUserName(username){
     const DB = await makeDb();
     const result = await DB.collection("users").find({userName:username})
     const user = await result.toArray();
-    console.log(user[0].password);
     return user[0].password;
 }
 
