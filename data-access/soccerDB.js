@@ -20,10 +20,21 @@ async function findUserByUserName(username){
     const DB = await makeDb();
     const result = await DB.collection("users").find({userName:username})
     const found = await result.toArray()
+    console.log(found);
+    console.log(result.password);
     if (found.length === 0) {
       return false;
     }
     return true;
+}
+
+// find user in the users collection by username and return hes password
+async function getPasswordByUserName(username){
+    const DB = await makeDb();
+    const result = await DB.collection("users").find({userName:username})
+    const user = await result.toArray();
+    console.log(user[0].password);
+    return user[0].password;
 }
 
 // insert general user to users collection
@@ -52,5 +63,6 @@ async function insertRefereeUser(userName, password, firstName, lastName, refTyp
 
 // expose the functions that needs access outside the file (for the domain layer)
 exports.findUserByUserName = findUserByUserName;
+exports.getPasswordByUserName = getPasswordByUserName;
 exports.insertUser = insertUser;
 exports.insertRefereeUser = insertRefereeUser;

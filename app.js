@@ -4,6 +4,7 @@ app.use(express.json())
 const morgan = require('morgan');
 require("dotenv/config" );
 app.use(morgan('dev'));
+const session = require("client-sessions");
 
 
 const port = process.env.PORT || "3000";
@@ -21,9 +22,26 @@ app.use((req, res, next) => {
   next();
 });
 
+//settings cookies config
+app.use(
+  session({
+    cookieName: "session", // the cookie key name
+    secret: "IqFic484907I0T552hiMQ1UCJimRGL55", // the encryption key
+    duration: 5 * 60 * 1000, // expired after 5 minutes
+    activeDuration: 5 * 60 * 1000, // if expiresIn < activeDuration,
+    //the session will be extended by activeDuration milliseconds
+    cookie: {
+      httpOnly: false,
+    },
+  })
+);
+
 
 const registerController = require('./service-controllers/RegisterController');
 app.use("/register", registerController);
+
+const loginController = require('./service-controllers/LoginController');
+app.use("/login", loginController);
 
 
 
