@@ -20,8 +20,6 @@ async function findUserByUserName(username){
     const DB = await makeDb();
     const result = await DB.collection("users").find({userName:username})
     const found = await result.toArray()
-    console.log(found);
-    console.log(result.password);
     if (found.length === 0) {
       return false;
     }
@@ -30,17 +28,93 @@ async function findUserByUserName(username){
 
 async function findFARuserByUserName(username){
   const DB = await makeDb();
-    const result = await DB.collection("referees").find({userName:username})
+    const result = await DB.collection("FARs").find({userName:username})
     const found = await result.toArray()
-    console.log(found);
-    console.log(result.password);
     if (found.length === 0) {
       return false;
     }
     return true;
 }
 
-// find user in the users collection by username and return hes password
+// async function findRefereeUserByUserName(username){
+//   const DB = await makeDb();
+//     const result = await DB.collection("referees").find({userName:username})
+//     const found = await result.toArray()
+//     if (found.length === 0) {
+//       return false;
+//     }
+//     return true;
+// }
+
+// async function findLeagueByName(name){
+//   const DB = await makeDb();
+//     const result = await DB.collection("leagues").find({name:name})
+//     const found = await result.toArray();
+//     if (found.length === 0) {
+//       return false;
+//     }
+//     return true;
+// }
+
+async function findSeasonByName(name){
+  const DB = await makeDb();
+    const result = await DB.collection("seasons").find({name:name})
+    const found = await result.toArray();
+    if (found.length === 0) {
+      return false;
+    }
+    return true;
+}
+
+// find referee user in the referees collection by username and return the id
+async function getRefereeIdByUserName(username){
+  const DB = await makeDb();
+  const result = await DB.collection("referees").find({userName:username});
+  console.log(result);
+  // not found- null??
+  const user = await result.toArray();
+  console.log(user[0]._id);
+  return user[0]._id;
+}
+
+async function getLeagueIdByName(leagueName){
+  const DB = await makeDb();
+  const result = await DB.collection("leagues").find({name:leagueName});
+  console.log(result);
+  // not found- null??
+  const league = await result.toArray();
+  console.log(league[0]._id);
+  return league[0]._id;
+}
+
+// async function getSeasonIdByName(seasonName){
+//   const DB = await makeDb();
+//   const result = await DB.collection("seasons").find({name:seasonName})
+//   const season = await result.toArray();
+//   console.log(season[0]._id);
+//   return season[0]._id;
+// }
+
+async function addRefereeIDtoSeason(seasonName,refereeID){
+    const DB = await makeDb();
+    const result = await DB.collection("seasons").findOneAndUpdate({name:seasonName},{ $push: {refereesArray:{refereeID}}});
+    console.log(result);
+    // const result = await DB.collection("seasons").find({name:seasonName})
+    // const season = await result.toArray();
+    // console.log(season[0]._id);
+    // return season[0]._id;
+  }
+
+async function checkLeagueInSeasonById(seasonName,leagueID){
+  const DB = await makeDb();
+  const result = await DB.collection("seasons").find({name:seasonName})
+  const season = await result.toArray();
+  console.log(season[0].league);
+  console.log(leagueID);
+  return leagueID == season[0].league;
+}
+
+// find user in the users collection by username and return the password
 async function getPasswordByUserName(username){
     const DB = await makeDb();
     const result = await DB.collection("users").find({userName:username})
@@ -78,3 +152,11 @@ exports.findFARuserByUserName = findFARuserByUserName;
 exports.getPasswordByUserName = getPasswordByUserName;
 exports.insertUser = insertUser;
 exports.insertRefereeUser = insertRefereeUser;
+exports.getRefereeIdByUserName = getRefereeIdByUserName;
+// exports.findRefereeUserByUserName = findRefereeUserByUserName;
+// exports.findLeagueByName = findLeagueByName;
+exports.findSeasonByName = findSeasonByName;
+exports.getLeagueIdByName = getLeagueIdByName;
+// exports.getSeasonIdByName = getSeasonIdByName;
+exports.checkLeagueInSeasonById = checkLeagueInSeasonById;
+exports.addRefereeIDtoSeason = addRefereeIDtoSeason;

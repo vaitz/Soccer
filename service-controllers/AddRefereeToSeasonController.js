@@ -1,13 +1,14 @@
-
 var express = require("express");
 var router = express.Router();
 const AddRefereeToSeason = require('../domain-usecases/AddRefereeToSeason');
+const FARauth = require('../domain-usecases/FARauth');
 
 //authentication to all incoming requests
 app.use(async function (req, res, next) {
     if (req.session && req.session.userName) {
       const userName = req.session.userName;
-      if () {
+      let ans = await FARauth.findFARbyUserName(userName);
+      if (ans) {
         next();
       }
     } else {
@@ -18,7 +19,8 @@ app.use(async function (req, res, next) {
 
 router.post('',async (req, res) => {
     // // extract fields from the request body
-    let { RefereeUserName, league, season } = req.body;
+    let { refereeUserName, league, season } = req.body;
+    let ans = await AddRefereeToSeason.addRefereeToSeason(refereeUserName, league, season);
     // if(accountType == "Referee"){
     //     let refType = req.body.refType;
     //     let msg = await RefereeRegister.register(userName, password, firstName, lastName, refType);
