@@ -9,7 +9,7 @@ router.post('',async (req, res) => {
     const msg = await login.login(userName, password);
     
     massege_code = msg.substring(0, msg.indexOf(','))
-    if (massege_code == 201){
+    if (massege_code == 200){
         // Set cookie
         req.session.userName = userName;
         // return cookie
