@@ -70,20 +70,20 @@ async function findSeasonByName(name){
 async function getRefereeIdByUserName(username){
   const DB = await makeDb();
   const result = await DB.collection("referees").find({userName:username});
-  console.log(result);
-  // not found- null??
   const user = await result.toArray();
-  console.log(user[0]._id);
+  if (user.length === 0) {
+    return null;
+  }
   return user[0]._id;
 }
 
 async function getLeagueIdByName(leagueName){
   const DB = await makeDb();
   const result = await DB.collection("leagues").find({name:leagueName});
-  console.log(result);
-  // not found- null??
   const league = await result.toArray();
-  console.log(league[0]._id);
+  if (league.length === 0) {
+    return null;
+  }
   return league[0]._id;
 }
 
@@ -97,21 +97,15 @@ async function getLeagueIdByName(leagueName){
 
 async function addRefereeIDtoSeason(seasonName,refereeID){
     const DB = await makeDb();
-    const result = await DB.collection("seasons").findOneAndUpdate({name:seasonName},{ $push: {refereesArray:{refereeID}}});
-    console.log(result);
-    // const result = await DB.collection("seasons").find({name:seasonName})
-    // const season = await result.toArray();
-    // console.log(season[0]._id);
-    // return season[0]._id;
+    const result = await DB.collection("seasons").findOneAndUpdate({name:seasonName},{ $push: {refereesArray: refereeID}});
+    // check if not working?
   }
 
 async function checkLeagueInSeasonById(seasonName,leagueID){
   const DB = await makeDb();
   const result = await DB.collection("seasons").find({name:seasonName})
   const season = await result.toArray();
-  console.log(season[0].league);
-  console.log(leagueID);
-  return leagueID == season[0].league;
+  return season[0].league.equals(leagueID);
 }
 
 // find user in the users collection by username and return the password
@@ -138,12 +132,6 @@ async function insertRefereeUser(userName, password, firstName, lastName, refTyp
     await DB.collection("referees").insertOne(newReferee);
     return true;
 }
-
-
-
-// update
-
-// delete
 
 
 // expose the functions that needs access outside the file (for the domain layer)

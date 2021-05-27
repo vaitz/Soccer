@@ -2,7 +2,7 @@ const soccerDB = require('../data-access/SoccerDB');
 
 async function addRefereeToSeason(refereeUserName, league, season){
     // check fields exists
-    if(!refereeUserName || !league || !season ){
+    if(!refereeUserName || !league || !season){
         return "Missing fields, make sure you entered the following: refereeUserName, league, season.";
     }
 
@@ -12,9 +12,9 @@ async function addRefereeToSeason(refereeUserName, league, season){
     let leagueID = await soccerDB.getLeagueIdByName(league);
     let ansSeason = await soccerDB.findSeasonByName(season);
 
-    // if(!ansRef || !ansLeague || !ansSeason){
-    //     return "One or more of the entities not exists in the DB."
-    // }
+    if(refereeID == null || leagueID == null || !ansSeason){
+        return "One or more of the entities not exists in the DB.";
+    }
 
 
 
@@ -24,14 +24,12 @@ async function addRefereeToSeason(refereeUserName, league, season){
         return "This season isn't part of this league."
     }
 
-    // add referee to season
-    let finAns = await soccerDB.addRefereeIDtoSeason(season, refereeID);
+    // check if referee already exists? - tests almog
 
-    if(finAns){
-        return "Referee added to the season successfully";
-    }else{
-        return "problem";
-    }
+    // add referee to season
+    await soccerDB.addRefereeIDtoSeason(season, refereeID);
+    return "Referee added to the season successfully";
+    
 
     // let seasonID = await soccerDB.getSeasonIdByName(season);   
 
