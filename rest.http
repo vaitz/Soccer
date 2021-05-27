@@ -3,11 +3,12 @@ POST http://localhost:3000/register
 content-type: application/json
 
 {
-    "userName": "tomy", 
+    "userName": "mayofdfgd", 
     "password": "m123456",
     "firstName": "may",
     "lastName": "v",
-    "accountType": "Referee"
+    "accountType": "Referee",
+    "refType": "main_referee"
 }
 
 ###
@@ -18,4 +19,14 @@ content-type: application/json
 {
     "userName": "may",
     "password": "m123456"
+}
+
+###
+POST http://localhost:3000/addRefereeToSeason
+content-type: application/json
+
+{
+    "refereeUserName": "may",
+    "league": "league1",
+    "season": "league1_2021"
 }
