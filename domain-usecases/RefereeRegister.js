@@ -28,7 +28,7 @@ async function register(userName, password, firstName, lastName, refType){
     // check if referee user exists 
     let exists = await soccerDB.findUserByUserName(userName);
     if(exists){
-        console.log('User already exists in the DB');
+        // console.log('User already exists in the DB');
         return "User already exists in the DB.";
     }
 

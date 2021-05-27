@@ -43,6 +43,9 @@ app.use("/register", registerController);
 const loginController = require('./service-controllers/LoginController');
 app.use("/login", loginController);
 
+const AddRefereeToSeasonController = require('./service-controllers/AddRefereeToSeasonController');
+app.use("/addRefereeToSeason", AddRefereeToSeasonController);
+
 
 
 //if non of the above:
@@ -57,9 +60,9 @@ app.use(function (err, req, res, next) {
     .send({ message: err.message || "Internal Server Error", success: false });
 });
 
-const server = app.listen(port, () => {
-  console.log(`Server listen on port ${port}`);
-});
+// const server = app.listen(port, () => {
+//   console.log(`Server listen on port ${port}`);
+// });
 
 process.on("SIGINT", function () {
   if (server) {

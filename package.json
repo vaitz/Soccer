@@ -5,8 +5,9 @@
   "main": "app.js",
   "scripts": {
     "start": "node app.js",
-    "start nodemon": "nodemon app.js",
-    "dev": "nodemon app.js"
+    "dev": "nodemon app.js",
+    "test": "jest",
+    "testWatch": "jest --watch --detectOpenHandles"
   },
   "author": "Tom",
   "license": "ISC",
@@ -25,6 +26,8 @@
     "morgan": "^1.10.0"
   },
   "devDependencies": {
-    "nodemon": "^2.0.7"
+    "jest": "^27.0.1",
+    "nodemon": "^2.0.7",
+    "supertest": "^6.1.3"
   }
 }
