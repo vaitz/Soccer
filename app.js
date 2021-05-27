@@ -43,6 +43,9 @@ app.use("/register", registerController);
 const loginController = require('./service-controllers/LoginController');
 app.use("/login", loginController);
 
+const AddRefereeToSeasonController = require('./service-controllers/AddRefereeToSeasonController');
+app.use("/addRefereeToSeason", AddRefereeToSeasonController);
+
 
 
 //if non of the above:

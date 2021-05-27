@@ -28,6 +28,18 @@ async function findUserByUserName(username){
     return true;
 }
 
+async function findFARuserByUserName(username){
+  const DB = await makeDb();
+    const result = await DB.collection("referees").find({userName:username})
+    const found = await result.toArray()
+    console.log(found);
+    console.log(result.password);
+    if (found.length === 0) {
+      return false;
+    }
+    return true;
+}
+
 // find user in the users collection by username and return hes password
 async function getPasswordByUserName(username){
     const DB = await makeDb();
@@ -41,7 +53,6 @@ async function getPasswordByUserName(username){
 async function insertUser(userName, password){
     const DB = await makeDb();
     let newUser = new User(userName, password);
-    
     await DB.collection("users").insertOne(newUser);
     return true;
 }
@@ -63,6 +74,7 @@ async function insertRefereeUser(userName, password, firstName, lastName, refTyp
 
 // expose the functions that needs access outside the file (for the domain layer)
 exports.findUserByUserName = findUserByUserName;
+exports.findFARuserByUserName = findFARuserByUserName;
 exports.getPasswordByUserName = getPasswordByUserName;
 exports.insertUser = insertUser;
 exports.insertRefereeUser = insertRefereeUser;
