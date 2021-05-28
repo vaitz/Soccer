@@ -7,7 +7,8 @@
     "start": "node app.js",
     "dev": "nodemon app.js",
     "test": "jest",
-    "testWatch": "jest --watch --detectOpenHandles"
+    "testWatch": "jest --watch --detectOpenHandles",
+    "testCover": "jest --coverage"
   },
   "author": "Tom",
   "license": "ISC",
