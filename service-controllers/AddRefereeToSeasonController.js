@@ -18,7 +18,7 @@ router.use(async function (req, res, next) {
 // RFA
 
 router.post('',async (req, res) => {
-    // // extract fields from the request body
+    // extract fields from the request body
     let { refereeUserName, league, season } = req.body;
     let msg = await AddRefereeToSeason.addRefereeToSeason(refereeUserName, league, season);
 
