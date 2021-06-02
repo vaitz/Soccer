@@ -6,7 +6,8 @@ const { register } = require('../../domain-usecases/RefereeRegister');
 
 test('should output text', async () =>
 {
-    const result = await register('almogtry10', 'm123456', 'may', 'v', 'main_referee');
+    
+    const result = await register('almogtry895', 'm123456', 'may', 'v', 'main_referee');
     expect(result).toBe("Referee added to the DB");
 });
     

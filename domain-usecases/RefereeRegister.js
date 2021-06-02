@@ -1,6 +1,6 @@
 const soccerDB = require('../data-access/SoccerDB');
 const bcrypt = require("bcrypt");
-
+const constant = require("../constant/constant")
 
 //add email to register
 
@@ -14,6 +14,11 @@ async function register(userName, password, firstName, lastName, refType){
     if(password.length < 6 || !(/\d/.test(password) && /[a-zA-Z]/.test(password))){
         return "The password entered is not according to the rules: more then 6 characters or equal, contains at least one letter and one digit.";
     }
+
+    if(!Object.values(constant.refeereType).includes(refType)) {
+        return "Referee Type is not valid"
+    }
+
 
     // change the password to hash- security
     let hash_password = bcrypt.hashSync(
@@ -32,7 +37,7 @@ async function register(userName, password, firstName, lastName, refType){
     await soccerDB.insertRefereeUser(userName, hash_password, firstName, lastName, refType);
     await soccerDB.insertUser(userName, hash_password);
     console.log('Referee added to the DB');
-    return "Referee added to the DB";
+    return "201, Referee added to the DB";
     
 
 }
