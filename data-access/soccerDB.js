@@ -17,7 +17,7 @@ async function makeDb () {
 
 async function getTeamsInLeague(leagueName){
   const DB = await makeDb();
-  const result = await DB.collection("leagues").find({name:leagueName})
+  const result = await DB.collection("leagues").find({name:leagueName});
   const leagueObj = await result.toArray();
   if (leagueObj.length === 0) {
     return null;
@@ -25,11 +25,23 @@ async function getTeamsInLeague(leagueName){
   return leagueObj[0].teamsArray;
 }
 
+async function getTeamsName(teamsIDarray){
+  const DB = await makeDb();
+  const result = await DB.collection("teams").find({_id:{$in: teamsIDarray}});
+  const teams = await result.toArray();
+  if (teams.length === 0) {
+    return null;
+  }
+  console.log(teams);
+  let teamsName = teams.map(team=>team.name);
+  return teamsName;
+}
+
 // find user in the users collection by username
 async function findUserByUserName(username){
     const DB = await makeDb();
-    const result = await DB.collection("users").find({userName:username})
-    const found = await result.toArray()
+    const result = await DB.collection("users").find({userName:username});
+    const found = await result.toArray();
     if (found.length === 0) {
       return false;
     }
@@ -166,3 +178,4 @@ exports.getLeagueIdByName = getLeagueIdByName;
 exports.checkLeagueInSeasonById = checkLeagueInSeasonById;
 exports.addRefereeIDtoSeason = addRefereeIDtoSeason;
 exports.getTeamsInLeague = getTeamsInLeague;
+exports.getTeamsName = getTeamsName;

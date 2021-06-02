@@ -115,7 +115,7 @@ async function schedule(league, season){
     let teamsID = await soccerDB.getTeamsInLeague(league);
 
     // get the teams name 
-    let teams = teamsID;
+    let teams = await soccerDB.getTeamsName(teamsID);
 
     console.log("teams in league:");
     console.log(teams);
@@ -123,6 +123,8 @@ async function schedule(league, season){
 
     console.log("Matches schedule:");
     console.log(tournamentRounds);
+
+    // save to the DB- matches and season(array)
 
     // home and away
 
