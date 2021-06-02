@@ -15,6 +15,16 @@ async function makeDb () {
   return CLIENT.db(DB_NAME);
 }
 
+async function getTeamsInLeague(leagueName){
+  const DB = await makeDb();
+  const result = await DB.collection("leagues").find({name:leagueName})
+  const leagueObj = await result.toArray();
+  if (leagueObj.length === 0) {
+    return null;
+  }
+  return leagueObj[0].teamsArray;
+}
+
 // find user in the users collection by username
 async function findUserByUserName(username){
     const DB = await makeDb();
@@ -155,3 +165,4 @@ exports.getLeagueIdByName = getLeagueIdByName;
 // exports.getSeasonIdByName = getSeasonIdByName;
 exports.checkLeagueInSeasonById = checkLeagueInSeasonById;
 exports.addRefereeIDtoSeason = addRefereeIDtoSeason;
+exports.getTeamsInLeague = getTeamsInLeague;

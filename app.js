@@ -46,7 +46,8 @@ app.use("/login", loginController);
 const AddRefereeToSeasonController = require('./service-controllers/AddRefereeToSeasonController');
 app.use("/addRefereeToSeason", AddRefereeToSeasonController);
 
-
+const MatchesScheduleController = require('./service-controllers/MatchesScheduleController');
+app.use("/scheduleMatchesSeasonInLeague", MatchesScheduleController);
 
 //if non of the above:
 app.use((req, res) => {

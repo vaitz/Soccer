@@ -87,11 +87,11 @@ const generateTournament = (participants, round2) => {
     return tournamentRounds;
 };
 
-async function schedule(league){
-    // // check fields exists
-    // if(!userName || !password){
-    //     return "Missing fields, make sure you entered the following: userName, password.";
-    // }
+async function schedule(league, season){
+    // check fields exists
+    if(!league || !season){
+        return "Missing fields, make sure you entered the following: league, season.";
+    }
 
     // // check if user exists 
     // let exists = await soccerDB.findUserByUserName(userName);
@@ -107,13 +107,29 @@ async function schedule(league){
     // }else{
     //     return "200, User login successfully.";
     // }
-    let teams = await soccerDB.getTeamsInLeague(league);
+
+
+    // get the matches policy from league
+
+    // get the teams id from league
+    let teamsID = await soccerDB.getTeamsInLeague(league);
+
+    // get the teams name 
+    let teams = teamsID;
+
+    console.log("teams in league:");
+    console.log(teams);
     let tournamentRounds = generateTournament(teams);
+
+    console.log("Matches schedule:");
     console.log(tournamentRounds);
+
+    // home and away
+
+    return tournamentRounds;
 }
 
 
 
 exports.schedule = schedule;
 
-// schedule();
