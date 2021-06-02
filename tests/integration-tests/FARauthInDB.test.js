@@ -6,4 +6,10 @@ test('should return boolean', async () =>
     expect(result).toBe(false);
 });
     
-//.toBeFalsy();
+//in DB
+test('should return boolean', async () =>
+{
+    const result = await findFARbyUserName('may');
+    expect(result).toBe(true);
+});
+

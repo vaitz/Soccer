@@ -2,6 +2,7 @@ const soccerDB = require('../data-access/SoccerDB');
 const bcrypt = require("bcrypt");
 
 
+//add email to register
 
 async function register(userName, password, firstName, lastName, refType){
     // check fields exists

@@ -2,3 +2,7 @@ node_modules
 package-lock
 package
 .env
+coverage
+.gitignore
+mongoWork.mongodb
+testAPI.http
