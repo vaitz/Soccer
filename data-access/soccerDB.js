@@ -132,6 +132,14 @@ async function insertRefereeUser(userName, password, firstName, lastName, refTyp
     return true;
 }
 
+// async function main() {
+//   var quote =await checkLeagueInSeasonById("2021", "60af7cf79c0c05a79d219c59");
+
+//   console.log('3', quote);
+// }
+// main();
+
+
 
 // expose the functions that needs access outside the file (for the domain layer)
 exports.findUserByUserName = findUserByUserName;
