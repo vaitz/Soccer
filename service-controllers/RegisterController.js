@@ -12,7 +12,7 @@ router.post('',async (req, res) => {
 
         massege_code = msg.substring(0, msg.indexOf(','));
         if(massege_code == 201){
-            res.status(201).send({ message: msg, success: true });
+            res.status(201).send({ message: msg.substring(msg.indexOf(',')+2), success: true });
         }else{
             res.status(400).send({ message: msg, success: false });
         }

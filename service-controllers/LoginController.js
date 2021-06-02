@@ -13,7 +13,7 @@ router.post('',async (req, res) => {
         // Set cookie
         req.session.userName = userName;
         // return cookie
-        res.status(200).send({ message: msg, success: true });
+        res.status(200).send({ message: msg.substring(msg.indexOf(',')+2), success: true });
     }
       
     else {
