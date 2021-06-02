@@ -1,13 +1,5 @@
 const soccerDB = require('../data-access/SoccerDB');
 
-// const teams = [
-//     "Red",
-//     "Orange",
-//     "Yellow",
-//     "Green",
-//     "Blue",
-//     "tom"
-// ];
 
 function shuffle(array) {
     var currentIndex = array.length,  randomIndex;
@@ -109,7 +101,7 @@ async function schedule(league, season){
     // }
 
 
-    // get the matches policy from league
+    // get the matches policy from league- check if its 2 rounds or 1
 
     // get the teams id from league
     let teamsID = await soccerDB.getTeamsInLeague(league);
