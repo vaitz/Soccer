@@ -17,7 +17,6 @@ async function login(userName, password){
     }
 
     let passwordDB = await soccerDB.getPasswordByUserName(userName);
-
     if(!bcrypt.compareSync(password, passwordDB)){
         console.log("Username or Password incorrect");
         return "Username or Password incorrect";
