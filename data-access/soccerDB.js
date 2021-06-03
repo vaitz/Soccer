@@ -1,4 +1,6 @@
 const Referee = require('./entities/Referee');
+const Season = require('./entities/Season');
+const Match = require('./entities/Match');
 const User = require('./entities/User');
 const {MongoClient} = require('mongodb');
 
@@ -34,6 +36,27 @@ async function getRoundsPolicy(policyID){
   }
   return policyObj[0].rounds;
 }
+
+async function createSeason(season){
+  const DB = await makeDb();
+  let seasonObj = new Season(season.name,season.league,season.refereesArray,season.matchesScheduleArray,season.year);
+  const result = await DB.collection("seasons").insertOne(seasonObj);
+  if(result.insertedId == null){
+    return false;
+  }
+  return true;
+}
+
+async function createMatches(matches){
+  const DB = await makeDb();
+  let matchesObj = matches.map(match=>new Match(match.home_team,match.away_team,match.date,match.stedium,match.refereesArray,match.eventLogArray));
+  const result = await DB.collection("matches").insertMany(matchesObj, forceServerObjectId=true);
+  if(result.insertedIds == null){
+    return null;
+  }
+  return Object.entries(result.insertedIds).map(id=>id[1]);
+}
+
 async function getTeamsName(teamsIDarray){
   const DB = await makeDb();
   const result = await DB.collection("teams").find({_id:{$in: teamsIDarray}});
@@ -189,3 +212,5 @@ exports.addRefereeIDtoSeason = addRefereeIDtoSeason;
 exports.getLeagueDetails = getLeagueDetails;
 exports.getTeamsName = getTeamsName;
 exports.getRoundsPolicy = getRoundsPolicy;
+exports.createMatches = createMatches;
+exports.createSeason =createSeason;

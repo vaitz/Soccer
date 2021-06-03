@@ -153,12 +153,15 @@ async function schedule(leagueName, seasonName){
     });
 
     console.log(matches);
+    let matchesIDs = await soccerDB.createMatches(matches);
 
-    
+    let season = {name: seasonName,league: league.id,matchesScheduleArray: matchesIDs,year: year,refereesArray:[]};
 
-    // save to the DB- matches and season(array)
-    //await soccerDB.createSeason(season);
+    let created = await soccerDB.createSeason(season);
 
+    if(!created){
+        console.log('error');
+    }
     // add season id to matches
 
 
