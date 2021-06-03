@@ -1,13 +1,5 @@
 const soccerDB = require('../data-access/SoccerDB');
 
-// const teams = [
-//     "Red",
-//     "Orange",
-//     "Yellow",
-//     "Green",
-//     "Blue",
-//     "tom"
-// ];
 
 function shuffle(array) {
     var currentIndex = array.length,  randomIndex;
@@ -59,13 +51,13 @@ const rotateArray = (array) => {
     return [firstElement, lastElement, ...p];
 };
 
-const generateTournament = (participants, round2) => {
+const generateTournament = (participants, round1) => {
     const tournamentRounds = [];
     const rounds = Math.ceil(participants.length - 1);
     newPraticpants = shuffle(participants);
     let p = Array.from(newPraticpants);
 
-    if (round2) {
+    if (round1) {
         for (let i = 0; i < rounds; i++) {
             tournamentRounds.push(matchParticipants(p,i));
             p = rotateArray(p);
@@ -87,48 +79,82 @@ const generateTournament = (participants, round2) => {
     return tournamentRounds;
 };
 
-async function schedule(league, season){
+function randomDate(start, end, startHour, endHour) {
+    var date = new Date(+start + Math.random() * (end - start));
+    var hour = startHour + Math.random() * (endHour - startHour) | 0;
+    date.setHours(hour);
+    date.setMinutes(0);
+    date.setSeconds(0);
+    date.setMilliseconds(0);
+    return date;
+  }
+  
+
+
+async function schedule(leagueName, seasonName){
     // check fields exists
-    if(!league || !season){
-        return "Missing fields, make sure you entered the following: league, season.";
+    if(!leagueName || !seasonName){
+        return {msg:"Missing fields, make sure you entered the following: league, season."};
     }
 
-    // // check if user exists 
-    // let exists = await soccerDB.findUserByUserName(userName);
-    // if(!exists){
-    //     console.log('User not exists in the DB');
-    //     return "User not exists in the DB.";
-    // }
 
-    // let passwordDB = await soccerDB.getPasswordByUserName(userName);
-    // if(!bcrypt.compareSync(password, passwordDB)){
-    //     console.log("Username or Password incorrect");
-    //     return "Username or Password incorrect";
-    // }else{
-    //     return "200, User login successfully.";
-    // }
+    // get the id,policy,teams id from league
+    let league = await soccerDB.getLeagueDetails(leagueName);
+
+    // check league
+    if(league == null){
+        return {msg:"league not exists."};
+    }
+
+    // get the matches policy from league- check if its 2 rounds or 1
+    let policyID = league.policy;
+    let roundNumber = await soccerDB.getRoundsPolicy(policyID);
+
+    let teamsID = league.teams;
+    // get the teams names (objects with id and name)
+    let teamsObj = await soccerDB.getTeamsName(teamsID);
+
+    round1 = false;
+    if(roundNumber == 1){
+        round1 = true;
+    }
+
+    let tournamentRounds = generateTournament(teamsObj,round1);
 
 
-    // get the matches policy from league
+    // get year from season
+    let year = seasonName.substring(seasonName.indexOf('_')+1);
+    console.log(year);
 
-    // get the teams id from league
-    let teamsID = await soccerDB.getTeamsInLeague(league);
-
-    // get the teams name 
-    let teams = await soccerDB.getTeamsName(teamsID);
-
-    console.log("teams in league:");
-    console.log(teams);
-    let tournamentRounds = generateTournament(teams);
-
+    // add date and hour for every fixture in season and det the home stedium
+    let matches = [];
+    let returnMatches = [];
     console.log("Matches schedule:");
-    console.log(tournamentRounds);
+    tournamentRounds.forEach(fixture => {
+        console.log("------------------------------")
+        let date = randomDate(new Date(year, 1), new Date(year,12),'16:00','22:00');
+        console.log(date);
+        fixture.forEach(match => {
+            console.log('match:')
+            console.log('stedium- '+match[0].stedium)
+            console.log('   home: '+match[0].name)
+            console.log('   away: '+match[1].name)
+            matches.push({home_team: match[0].id,away_team: match[1].id,date: date,stedium: match[0].stedium, refereesArray:[], eventLogArray:[] });
+            returnMatches.push({home_team: match[0].name,away_team: match[1].name,date: date,stedium: match[0].stedium});
+        });
+    });
 
-    // save to the DB- matches and season(array)
+    let matchesIDs = await soccerDB.createMatches(matches);
 
-    // home and away
+    let season = {name: seasonName,league: league.id,matchesScheduleArray: matchesIDs,year: year,refereesArray:[]};
 
-    return tournamentRounds;
+    let created = await soccerDB.createSeason(season);
+
+    if(!created){
+        return {msg:'Something went wrong..'};
+    }else{
+        return {msg:"201, Season and Matches added to the DB.", schedule: returnMatches};
+    }
 }
 
 

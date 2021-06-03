@@ -1,4 +1,6 @@
 const Referee = require('./entities/Referee');
+const Season = require('./entities/Season');
+const Match = require('./entities/Match');
 const User = require('./entities/User');
 const {MongoClient} = require('mongodb');
 
@@ -15,14 +17,44 @@ async function makeDb () {
   return CLIENT.db(DB_NAME);
 }
 
-async function getTeamsInLeague(leagueName){
+async function getLeagueDetails(leagueName){
   const DB = await makeDb();
   const result = await DB.collection("leagues").find({name:leagueName});
   const leagueObj = await result.toArray();
   if (leagueObj.length === 0) {
     return null;
   }
-  return leagueObj[0].teamsArray;
+  return {id:leagueObj[0]._id,policy:leagueObj[0].matchSchedulingPolicy,teams:leagueObj[0].teamsArray};
+}
+
+async function getRoundsPolicy(policyID){
+  const DB = await makeDb();
+  const result = await DB.collection("MatchSchedulingPolicy").find({_id:policyID});
+  const policyObj = await result.toArray();
+  if (policyObj.length === 0) {
+    return null;
+  }
+  return policyObj[0].rounds;
+}
+
+async function createSeason(season){
+  const DB = await makeDb();
+  let seasonObj = new Season(season.name,season.league,season.refereesArray,season.matchesScheduleArray,season.year);
+  const result = await DB.collection("seasons").insertOne(seasonObj);
+  if(result.insertedId == null){
+    return false;
+  }
+  return true;
+}
+
+async function createMatches(matches){
+  const DB = await makeDb();
+  let matchesObj = matches.map(match=>new Match(match.home_team,match.away_team,match.date,match.stedium,match.refereesArray,match.eventLogArray));
+  const result = await DB.collection("matches").insertMany(matchesObj, forceServerObjectId=true);
+  if(result.insertedIds == null){
+    return null;
+  }
+  return Object.entries(result.insertedIds).map(id=>id[1]);
 }
 
 async function getTeamsName(teamsIDarray){
@@ -32,8 +64,8 @@ async function getTeamsName(teamsIDarray){
   if (teams.length === 0) {
     return null;
   }
-  console.log(teams);
-  let teamsName = teams.map(team=>team.name);
+  
+  let teamsName = teams.map(function(team){ return {id: team._id,name: team.name, stedium: team.stedium}; });
   return teamsName;
 }
 
@@ -177,5 +209,8 @@ exports.getLeagueIdByName = getLeagueIdByName;
 // exports.getSeasonIdByName = getSeasonIdByName;
 exports.checkLeagueInSeasonById = checkLeagueInSeasonById;
 exports.addRefereeIDtoSeason = addRefereeIDtoSeason;
-exports.getTeamsInLeague = getTeamsInLeague;
+exports.getLeagueDetails = getLeagueDetails;
 exports.getTeamsName = getTeamsName;
+exports.getRoundsPolicy = getRoundsPolicy;
+exports.createMatches = createMatches;
+exports.createSeason =createSeason;
