@@ -1,13 +1,5 @@
 const soccerDB = require('../data-access/SoccerDB');
 
-// const teams = [
-//     "Red",
-//     "Orange",
-//     "Yellow",
-//     "Green",
-//     "Blue",
-//     "tom"
-// ];
 
 function shuffle(array) {
     var currentIndex = array.length,  randomIndex;
