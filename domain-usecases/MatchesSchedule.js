@@ -51,13 +51,13 @@ const rotateArray = (array) => {
     return [firstElement, lastElement, ...p];
 };
 
-const generateTournament = (participants, round2) => {
+const generateTournament = (participants, round1) => {
     const tournamentRounds = [];
     const rounds = Math.ceil(participants.length - 1);
     newPraticpants = shuffle(participants);
     let p = Array.from(newPraticpants);
 
-    if (round2) {
+    if (round1) {
         for (let i = 0; i < rounds; i++) {
             tournamentRounds.push(matchParticipants(p,i));
             p = rotateArray(p);
@@ -79,9 +79,21 @@ const generateTournament = (participants, round2) => {
     return tournamentRounds;
 };
 
-async function schedule(league, season){
+function randomDate(start, end, startHour, endHour) {
+    var date = new Date(+start + Math.random() * (end - start));
+    var hour = startHour + Math.random() * (endHour - startHour) | 0;
+    date.setHours(hour);
+    date.setMinutes(0);
+    date.setSeconds(0);
+    date.setMilliseconds(0);
+    return date;
+  }
+  
+
+
+async function schedule(leagueName, seasonName){
     // check fields exists
-    if(!league || !season){
+    if(!leagueName || !seasonName){
         return "Missing fields, make sure you entered the following: league, season.";
     }
 
@@ -101,24 +113,54 @@ async function schedule(league, season){
     // }
 
 
+    
+
+    // get the id,policy,teams id from league
+    let league = await soccerDB.getLeagueDetails(leagueName);
     // get the matches policy from league- check if its 2 rounds or 1
+    let policyID = league.policy;
+    let roundNumber = await soccerDB.getRoundsPolicy(policyID);
 
-    // get the teams id from league
-    let teamsID = await soccerDB.getTeamsInLeague(league);
+    let teamsID = league.teams;
+    // get the teams names (objects with id and name)
+    let teamsObj = await soccerDB.getTeamsName(teamsID);
 
-    // get the teams name 
-    let teams = await soccerDB.getTeamsName(teamsID);
+    round1 = false;
+    if(roundNumber == 1){
+        round1 = true;
+    }
 
-    console.log("teams in league:");
-    console.log(teams);
-    let tournamentRounds = generateTournament(teams);
+    let tournamentRounds = generateTournament(teamsObj,round1);
 
+
+    // get year from season
+    let year = seasonName.substring(seasonName.indexOf('_')+1);
+    console.log(year);
+
+    // add date and hour for every fixture in season and det the home stedium
+    let matches = [];
     console.log("Matches schedule:");
-    console.log(tournamentRounds);
+    tournamentRounds.forEach(fixture => {
+        console.log("------------------------------")
+        let date = randomDate(new Date(year, 1), new Date(year,12),'16:00','22:00');
+        console.log(date);
+        fixture.forEach(match => {
+            console.log('match-')
+            console.log('   home: '+match[0].name)
+            console.log('   away: '+match[1].name)
+            matches.push({home_team: match[0].id,away_team: match[1].id,date: date,stedium: match[0].stedium, refereesArray:[], eventLogArray:[] });
+        });
+    });
+
+    console.log(matches);
+
+    
 
     // save to the DB- matches and season(array)
+    //await soccerDB.createSeason(season);
 
-    // home and away
+    // add season id to matches
+
 
     return tournamentRounds;
 }
