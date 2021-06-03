@@ -36,5 +36,6 @@ POST http://localhost:3000/scheduleMatchesSeasonInLeague
 content-type: application/json
 {
     "league": "league1",
-    "season": "league1_2021"
+    "season": "league1_2020"
 }
+
