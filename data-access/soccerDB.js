@@ -59,6 +59,14 @@ async function createMatches(matches){
   return Object.entries(result.insertedIds).map(id=>id[1]);
 }
 
+async function getTeamID(teamName){
+  const DB = await makeDb();
+  const result = await DB.collection("teams").find({name:teamName});
+  const team = await result.toArray();
+  return team[0]._id;
+}
+
+
 async function getTeamsName(teamsIDarray){
   const DB = await makeDb();
   const result = await DB.collection("teams").find({_id:{$in: teamsIDarray}});
@@ -150,8 +158,12 @@ async function getSeasonByName(seasonName){
   return season[0];
 }
 
+async function findMatchAndUpdate(matchIDArr,home_team_id,away_team_id,new_date,new_stedium){
+  const DB = await makeDb();
+  const result = await DB.collection("matches").findOneAndUpdate({_id:{$in: matchIDArr},home_team:home_team_id,away_team:away_team_id},{ $set: {date: new_date, stedium:new_stedium}});
+}
+
 async function updateMatcheReferee(matchID,refID){
-  console.log(refID, matchID);
   const DB = await makeDb();
   const result = await DB.collection("matches").findOneAndUpdate({_id:matchID},{ $set: {refereesArray: [refID]}});
   return result;
@@ -234,3 +246,5 @@ exports.createMatches = createMatches;
 exports.createSeason =createSeason;
 exports.checkRefereeInSeasonById = checkRefereeInSeasonById;
 exports.updateMatcheReferee = updateMatcheReferee;
+exports.getTeamID = getTeamID;
+exports.findMatchAndUpdate = findMatchAndUpdate;

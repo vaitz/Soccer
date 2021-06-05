@@ -53,6 +53,9 @@ app.use("/scheduleRefereesToSeason", RefereeScheduleController);
 const MatchesScheduleController = require('./service-controllers/MatchesScheduleController');
 app.use("/scheduleMatchesSeasonInLeague", MatchesScheduleController);
 
+const RecheduleMatchController = require('./service-controllers/RecheduleMatchController');
+app.use("/rescheduleMatch", RecheduleMatchController);
+
 //if non of the above:
 app.use((req, res) => {
   res.sendStatus(404);
