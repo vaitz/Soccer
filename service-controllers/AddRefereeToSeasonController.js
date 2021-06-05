@@ -3,7 +3,7 @@ var router = express.Router();
 const AddRefereeToSeason = require('../domain-usecases/AddRefereeToSeason');
 const FARauth = require('../domain-usecases/FARauth');
 
-//authentication to all incoming requests
+// //authentication to all incoming requests
 // router.use(async function (req, res, next) {
 //     if (req.session && req.session.userName) {
 //       const userName = req.session.userName;

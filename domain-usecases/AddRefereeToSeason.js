@@ -24,7 +24,10 @@ async function addRefereeToSeason(refereeUserName, league, season){
     }
 
     // check if referee already exists? - tests almog
-    
+    let ansRef = await soccerDB.checkRefereeInSeasonById(season, refereeID);
+    if(ansRef){
+        return "The referee already in the season."
+    }
 
 
 
