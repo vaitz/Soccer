@@ -162,6 +162,18 @@ async function checkLeagueInSeasonById(seasonName,leagueID){
   return season[0].league.equals(leagueID);
 }
 
+async function checkRefereeInSeasonById(seasonName, refereeID){
+  const DB = await makeDb();
+  const result = await DB.collection("seasons").find({name:seasonName})
+  const season = await result.toArray();
+  const arr = season[0].refereesArray;
+  if(arr.length == 0){
+    return false;
+  }
+  console.log(arr.includes(refereeID));
+  return arr.includes(refereeID);
+}
+
 // find user in the users collection by username and return the password
 async function getPasswordByUserName(username){
     const DB = await makeDb();
@@ -214,3 +226,4 @@ exports.getTeamsName = getTeamsName;
 exports.getRoundsPolicy = getRoundsPolicy;
 exports.createMatches = createMatches;
 exports.createSeason =createSeason;
+exports.checkRefereeInSeasonById = checkRefereeInSeasonById;
