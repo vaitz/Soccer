@@ -6,3 +6,4 @@ coverage
 .gitignore
 mongoWork.mongodb
 testAPI.http
+rest.http
