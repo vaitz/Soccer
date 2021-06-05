@@ -4,18 +4,18 @@ const AddRefereeToSeason = require('../domain-usecases/AddRefereeToSeason');
 const FARauth = require('../domain-usecases/FARauth');
 
 //authentication to all incoming requests
-router.use(async function (req, res, next) {
-    if (req.session && req.session.userName) {
-      const userName = req.session.userName;
-      let ans = await FARauth.findFARbyUserName(userName);
-      if (ans) {
-        next();
-      }
-    } else {
-      res.sendStatus(401); //Unauthorized
-    }
-  });
-// RFA
+// router.use(async function (req, res, next) {
+//     if (req.session && req.session.userName) {
+//       const userName = req.session.userName;
+//       let ans = await FARauth.findFARbyUserName(userName);
+//       if (ans) {
+//         next();
+//       }
+//     } else {
+//       res.sendStatus(401); //Unauthorized
+//     }
+//   });
+// // RFA
 
 router.post('',async (req, res) => {
     // extract fields from the request body
