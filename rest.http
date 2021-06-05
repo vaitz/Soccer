@@ -28,8 +28,17 @@ content-type: application/json
 {
     "refereeUserName": "may",
     "league": "league1",
-    "season": "league1_2021"
+    "season": "league1_2020"
 }
+
+###
+POST http://localhost:3000/scheduleRefereesToSeason
+content-type: application/json
+
+{
+    "season": "league1_2020"
+}
+
 
 ###
 POST http://localhost:3000/scheduleMatchesSeasonInLeague

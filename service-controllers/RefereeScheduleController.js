@@ -19,15 +19,14 @@ const FARauth = require('../domain-usecases/FARauth');
 
 router.post('',async (req, res) => {
     // extract fields from the request body
-    // let { league, season } = req.body;
-    // let ans = await MatchesSchedule.schedule(league, season);
-    // let msg = ans.msg;
-    // if(msg.substring(0, msg.indexOf(',')) == 201){
-    //     res.status(201).send({ message: msg.substring(msg.indexOf(',')+2),schedule: ans.schedule, success: true });
-    // }
-    // else{
-    //     res.status(400).send({ message: msg, success: false });
-    // }
+    let { season } = req.body;
+    let msg = await RefereeSchedule.schedule(season);
+    if(msg.substring(0, msg.indexOf(',')) == 201){
+        res.status(201).send({ message: msg.substring(msg.indexOf(',')+2)});
+    }
+    else{
+        res.status(400).send({ message: msg, success: false });
+    }
 });
 
 module.exports = router;

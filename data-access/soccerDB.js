@@ -37,6 +37,8 @@ async function getRoundsPolicy(policyID){
   return policyObj[0].rounds;
 }
 
+
+
 async function createSeason(season){
   const DB = await makeDb();
   let seasonObj = new Season(season.name,season.league,season.refereesArray,season.matchesScheduleArray,season.year);
@@ -141,13 +143,19 @@ async function getLeagueIdByName(leagueName){
   return league[0]._id;
 }
 
-// async function getSeasonIdByName(seasonName){
-//   const DB = await makeDb();
-//   const result = await DB.collection("seasons").find({name:seasonName})
-//   const season = await result.toArray();
-//   console.log(season[0]._id);
-//   return season[0]._id;
-// }
+async function getSeasonByName(seasonName){
+  const DB = await makeDb();
+  const result = await DB.collection("seasons").find({name:seasonName})
+  const season = await result.toArray();
+  return season[0];
+}
+
+async function updateMatcheReferee(matchID,refID){
+  console.log(refID, matchID);
+  const DB = await makeDb();
+  const result = await DB.collection("matches").findOneAndUpdate({_id:matchID},{ $set: {refereesArray: [refID]}});
+  return result;
+}
 
 async function addRefereeIDtoSeason(seasonName,refereeID){
     const DB = await makeDb();
@@ -216,7 +224,7 @@ exports.getRefereeIdByUserName = getRefereeIdByUserName;
 // exports.findLeagueByName = findLeagueByName;
 exports.findSeasonByName = findSeasonByName;
 exports.getLeagueIdByName = getLeagueIdByName;
-// exports.getSeasonIdByName = getSeasonIdByName;
+exports.getSeasonByName = getSeasonByName;
 exports.checkLeagueInSeasonById = checkLeagueInSeasonById;
 exports.addRefereeIDtoSeason = addRefereeIDtoSeason;
 exports.getLeagueDetails = getLeagueDetails;
@@ -225,3 +233,4 @@ exports.getRoundsPolicy = getRoundsPolicy;
 exports.createMatches = createMatches;
 exports.createSeason =createSeason;
 exports.checkRefereeInSeasonById = checkRefereeInSeasonById;
+exports.updateMatcheReferee = updateMatcheReferee;
