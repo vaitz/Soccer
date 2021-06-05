@@ -166,7 +166,6 @@ async function checkRefereeInSeasonById(seasonName, refereeID){
   const DB = await makeDb();
   const result = await DB.collection("seasons").find({name:seasonName, refereesArray: refereeID})
   const season = await result.toArray();
-  console.log(season);
   if(season.length == 0){
     return false;
   }
