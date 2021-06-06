@@ -4,7 +4,7 @@ const request = supertest(app)
 
 describe('matches schedule acceptence tests', () => {
 
-    //TC21
+    //TC22
     test('matches schedule succeed', async () => {
         await request.post('/scheduleMatchesSeasonInLeague')
             .send({
@@ -14,7 +14,7 @@ describe('matches schedule acceptence tests', () => {
             .expect(201)
     });
 
-    //TC22
+    //TC23
     test('matches schedule faild', async () => {
         await request.post('/scheduleMatchesSeasonInLeague')
             .send({

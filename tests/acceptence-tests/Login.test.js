@@ -4,7 +4,7 @@ const request = supertest(app)
 
 describe('user login acceptance tests', () => {
     
-    //TC16
+    //TC17
     test('login succeed', async () => {
         await request.post('/login')
             .send({
@@ -14,7 +14,7 @@ describe('user login acceptance tests', () => {
             .expect(200)
     });
 
-    //TC17
+    //TC18
     test('login faild', async () => {
         await request.post('/login')
             .send({
