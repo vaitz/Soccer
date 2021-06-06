@@ -23,14 +23,14 @@ test('season not exists in the DB', async () =>
 //TC10    
 test('season not in the league', async () =>
 {
-    const result = await addRefereeToSeason('almogtry1', 'league1','2021');
+    const result = await addRefereeToSeason('almogtry1', 'league2','league1_2020');
     expect(result).toBe("This season isn't part of this league.");
 });
     
 //TC11   
 test('referee already in', async () =>
 {
-    const result = await addRefereeToSeason('almogtry1', 'league1','2021');
+    const result = await addRefereeToSeason('almogtry1', 'league1','league1_2020');
     expect(result).toBe("The referee already in the season.");
 });
 

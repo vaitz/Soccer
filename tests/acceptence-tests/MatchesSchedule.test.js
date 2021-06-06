@@ -18,7 +18,7 @@ describe('matches schedule acceptence tests', () => {
     test('matches schedule faild', async () => {
         await request.post('/scheduleMatchesSeasonInLeague')
             .send({
-                "league": "league2",
+                "league": "league3",
                 "season": "league1_2020"
             })
             .expect(400)
