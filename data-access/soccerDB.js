@@ -109,7 +109,7 @@ async function addRefereeIDtoSeason(seasonName,refereeID){
 // creating matches in the DB by reciving an array of matches
 async function createMatches(matches){
   const DB = await makeDb();
-  let matchesObj = matches.map(match=>new Match(match.home_team,match.away_team,match.date,match.stedium,match.refereesArray,match.eventLogArray));
+  let matchesObj = matches.map(match=>new Match(match.home_team,match.away_team,match.date,match.stadium,match.refereesArray,match.eventLogArray));
   const result = await DB.collection("matches").insertMany(matchesObj, forceServerObjectId=true);
   if(result.insertedIds == null){
     return null;
@@ -117,10 +117,10 @@ async function createMatches(matches){
   return Object.entries(result.insertedIds).map(id=>id[1]);
 }
 
-// change match schedule- date or stedium (or both)
-async function findMatchAndUpdate(matchIDArr,home_team_id,away_team_id,new_date,new_stedium){
+// change match schedule- date or stadium (or both)
+async function findMatchAndUpdate(matchIDArr,home_team_id,away_team_id,new_date,new_stadium){
   const DB = await makeDb();
-  const result = await DB.collection("matches").findOneAndUpdate({_id:{$in: matchIDArr},home_team:home_team_id,away_team:away_team_id},{ $set: {date: new_date, stedium:new_stedium}});
+  const result = await DB.collection("matches").findOneAndUpdate({_id:{$in: matchIDArr},home_team:home_team_id,away_team:away_team_id},{ $set: {date: new_date, stadium:new_stadium}});
 }
 
 // updating the referee in the match by reciving the match id and referee id
@@ -146,7 +146,7 @@ async function getTeamsName(teamsIDarray){
   if (teams.length === 0) {
     return null;
   }
-  let teamsName = teams.map(function(team){ return {id: team._id,name: team.name, stedium: team.stedium}; });
+  let teamsName = teams.map(function(team){ return {id: team._id,name: team.name, stadium: team.stadium}; });
   return teamsName;
 }
 

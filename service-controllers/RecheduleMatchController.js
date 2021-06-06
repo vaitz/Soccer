@@ -19,10 +19,10 @@ const FARauth = require('../domain-usecases/FARauth');
 
 router.post('',async (req, res) => {
     // extract fields from the request body
-    let { home_team,away_team, season, new_date, new_stedium} = req.body;
+    let { home_team,away_team, season, new_date, new_stadium} = req.body;
 
     // call the domain layer
-    let msg = await RecheduleMatch.reschedule(home_team,away_team, season, new_date, new_stedium);
+    let msg = await RecheduleMatch.reschedule(home_team,away_team, season, new_date, new_stadium);
     
     // return status code
     if(msg == "Successfully reschedule the matche."){

@@ -1,9 +1,9 @@
 const soccerDB = require('../data-access/SoccerDB');
 
-async function reschedule( home_team,away_team, seasonName, new_date, new_stedium){
+async function reschedule( home_team,away_team, seasonName, new_date, new_stadium){
         // check field exists
-        if(!home_team || !away_team || !seasonName || !new_date || !new_stedium){
-            return "Missing field, make sure you entered: home_team,away_team,season name,new_date, new_stedium.";
+        if(!home_team || !away_team || !seasonName || !new_date || !new_stadium){
+            return "Missing field, make sure you entered: home_team,away_team,season name,new_date, new_stadium.";
         }
 
         // get the season object
@@ -22,8 +22,8 @@ async function reschedule( home_team,away_team, seasonName, new_date, new_stediu
         let home_team_id = await soccerDB.getTeamID(home_team);
         let away_team_id = await soccerDB.getTeamID(away_team);
 
-        // update the match date or stedium or both
-        let ans = await soccerDB.findMatchAndUpdate(matchArr,home_team_id,away_team_id,new Date(new_date),new_stedium);
+        // update the match date or stadium or both
+        let ans = await soccerDB.findMatchAndUpdate(matchArr,home_team_id,away_team_id,new Date(new_date),new_stadium);
 
         return "Successfully reschedule the matche.";
 }

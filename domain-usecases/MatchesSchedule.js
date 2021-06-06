@@ -126,14 +126,14 @@ async function schedule(leagueName, seasonName){
     // get year from season
     let year = seasonName.substring(seasonName.indexOf('_')+1);
 
-    // add date and hour for every fixture in season and det the home stedium
+    // add date and hour for every fixture in season and det the home stadium
     let matches = [];
     let returnMatches = [];
     tournamentRounds.forEach(fixture => {
         let date = randomDate(new Date(year, 1), new Date(year,12),'16:00','22:00');
         fixture.forEach(match => {
-            matches.push({home_team: match[0].id,away_team: match[1].id,date: date,stedium: match[0].stedium, refereesArray:[], eventLogArray:[] });
-            returnMatches.push({home_team: match[0].name,away_team: match[1].name,date: date,stedium: match[0].stedium});
+            matches.push({home_team: match[0].id,away_team: match[1].id,date: date,stadium: match[0].stadium, refereesArray:[], eventLogArray:[] });
+            returnMatches.push({home_team: match[0].name,away_team: match[1].name,date: date,stadium: match[0].stadium});
         });
     });
 

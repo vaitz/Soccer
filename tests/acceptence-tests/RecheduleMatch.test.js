@@ -12,7 +12,7 @@ describe('Rechedule Match acceptence tests', () => {
                 "home_team": "hapoel tel aviv",
                 "away_team": "macabi haifa",
                 "new_date": "2020-07-21T20:00:00.000+00:00",
-                "new_stedium": "blumfield"            
+                "new_stadium": "blumfield"            
             })
             .expect(200)
     });
@@ -24,7 +24,7 @@ describe('Rechedule Match acceptence tests', () => {
                 "home_team": "hapoel tel aviv",
                 "away_team": "macabi haifa",
                 "new_date": "2020-07-21T20:00:00.000+00:00",
-                "new_stedium": "blumfield"            
+                "new_stadium": "blumfield"            
             })
             .expect(400)
     });

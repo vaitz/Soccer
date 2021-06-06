@@ -14,7 +14,7 @@ async function register(userName, password, firstName, lastName, refType){
     }
 
     if(!Object.values(constant.refeereType).includes(refType)) {
-        return "Referee Type is not valid"
+        return "Referee Type is not valid";
     }
 
 
