@@ -177,16 +177,16 @@ async function insertUser(userName, password){
   return true;
 }
 
-// find FAR user in the FARs collection by username and returns boolean answer
-async function findFARuserByUserName(username){
-  const DB = await makeDb();
-    const result = await DB.collection("FARs").find({userName:username})
-    const found = await result.toArray()
-    if (found.length === 0) {
-      return false;
-    }
-    return true;
-}
+// // find FAR user in the FARs collection by username and returns boolean answer
+// async function findFARuserByUserName(username){
+//   const DB = await makeDb();
+//     const result = await DB.collection("FARs").find({userName:username})
+//     const found = await result.toArray()
+//     if (found.length === 0) {
+//       return false;
+//     }
+//     return true;
+// }
 
 // find referee user in the referees collection by username and return the id
 async function getRefereeIdByUserName(username){

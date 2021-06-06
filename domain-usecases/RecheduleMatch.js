@@ -6,34 +6,24 @@ async function reschedule( home_team,away_team, seasonName, new_date, new_stediu
             return "Missing field, make sure you entered: home_team,away_team,season name,new_date, new_stedium.";
         }
 
+        // get the season object
         let season = await soccerDB.getSeasonByName(seasonName);
         if(season == null){
             return "season not exists.";
         }
 
+        // get the season matches array
         let matchArr = season.matchesScheduleArray;
         if(matchArr.length == 0){
             return "matches not exists in season.";
         }
 
+        // get the home and away team ids
         let home_team_id = await soccerDB.getTeamID(home_team);
         let away_team_id = await soccerDB.getTeamID(away_team);
 
+        // update the match date or stedium or both
         let ans = await soccerDB.findMatchAndUpdate(matchArr,home_team_id,away_team_id,new Date(new_date),new_stedium);
-
-        // let ans = await matchArr.forEach(async function(matchID) {
-            
-        //     // i += 1;
-        //     // i = i % refArr.length;
-        //     // let ans = await soccerDB.updateMatcheReferee(matchID,refArr[i]);
-        //     // if(ans.value == null){
-        //     //     return "something went wrong..";
-        //     // }
-        // });
-
-        // if(ans == "something went wrong.."){
-        //     return ans;
-        // }
 
         return "Successfully reschedule the matche.";
 }

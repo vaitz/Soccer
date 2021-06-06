@@ -5,8 +5,6 @@ const morgan = require('morgan');
 require("dotenv/config" );
 app.use(morgan('dev'));
 const session = require("client-sessions");
-
-
 const port = process.env.PORT || "3000";
 
 app.use((req, res, next) => {
@@ -36,7 +34,7 @@ app.use(
   })
 );
 
-
+// the routes
 const registerController = require('./service-controllers/RegisterController');
 app.use("/register", registerController);
 
@@ -56,11 +54,12 @@ app.use("/scheduleMatchesSeasonInLeague", MatchesScheduleController);
 const RecheduleMatchController = require('./service-controllers/RecheduleMatchController');
 app.use("/rescheduleMatch", RecheduleMatchController);
 
-//if non of the above:
+// if non of the above:
 app.use((req, res) => {
   res.sendStatus(404);
 });
 
+// for errors
 app.use(function (err, req, res, next) {
   console.error(err);
   res
@@ -68,6 +67,7 @@ app.use(function (err, req, res, next) {
     .send({ message: err.message || "Internal Server Error", success: false });
 });
 
+// server listening
 const server = app.listen(port, () => {
   console.log(`Server listen on port ${port}`);
 });

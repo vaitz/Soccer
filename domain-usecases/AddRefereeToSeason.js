@@ -6,7 +6,6 @@ async function addRefereeToSeason(refereeUserName, league, season){
         return "Missing fields, make sure you entered the following: refereeUserName, league, season.";
     }
 
-
     // check if the referee, league and season exists in the DB
     let refereeID = await soccerDB.getRefereeIdByUserName(refereeUserName);
     let leagueID = await soccerDB.getLeagueIdByName(league);
@@ -29,15 +28,9 @@ async function addRefereeToSeason(refereeUserName, league, season){
         return "The referee already in the season."
     }
 
-
-
     // add referee to season
     await soccerDB.addRefereeIDtoSeason(season, refereeID);
-    return "Referee added to the season successfully";
-    
-
-    // let seasonID = await soccerDB.getSeasonIdByName(season);   
-
+    return "Referee added to the season successfully"; 
 }
 
 // expose the function that needs access outside the file (for the service layer)

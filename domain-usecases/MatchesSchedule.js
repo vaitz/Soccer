@@ -1,6 +1,7 @@
 const soccerDB = require('../data-access/SoccerDB');
 
-
+// ------------------------------------------------------------------
+// internal functions for matches scheduling
 function shuffle(array) {
     var currentIndex = array.length,  randomIndex;
   
@@ -51,7 +52,7 @@ const rotateArray = (array) => {
     return [firstElement, lastElement, ...p];
 };
 
-const generateTournament = (participants, round1) => {
+const generateMatches = (participants, round1) => {
     const tournamentRounds = [];
     const rounds = Math.ceil(participants.length - 1);
     newPraticpants = shuffle(participants);
@@ -79,6 +80,7 @@ const generateTournament = (participants, round1) => {
     return tournamentRounds;
 };
 
+// get random date between the start date and the end date and the start hour and end hour
 function randomDate(start, end, startHour, endHour) {
     var date = new Date(+start + Math.random() * (end - start));
     var hour = startHour + Math.random() * (endHour - startHour) | 0;
@@ -87,16 +89,15 @@ function randomDate(start, end, startHour, endHour) {
     date.setSeconds(0);
     date.setMilliseconds(0);
     return date;
-  }
-  
+}
 
-
+// ------------------------------------------------------------------
+// the main schedule function
 async function schedule(leagueName, seasonName){
     // check fields exists
     if(!leagueName || !seasonName){
         return {msg:"Missing fields, make sure you entered the following: league, season."};
     }
-
 
     // get the id,policy,teams id from league
     let league = await soccerDB.getLeagueDetails(leagueName);
@@ -119,35 +120,28 @@ async function schedule(leagueName, seasonName){
         round1 = true;
     }
 
-    let tournamentRounds = generateTournament(teamsObj,round1);
-
+    // generate matches with round robin algorithem
+    let tournamentRounds = generateMatches(teamsObj,round1);
 
     // get year from season
     let year = seasonName.substring(seasonName.indexOf('_')+1);
-    console.log(year);
 
     // add date and hour for every fixture in season and det the home stedium
     let matches = [];
     let returnMatches = [];
-    console.log("Matches schedule:");
     tournamentRounds.forEach(fixture => {
-        console.log("------------------------------")
         let date = randomDate(new Date(year, 1), new Date(year,12),'16:00','22:00');
-        console.log(date);
         fixture.forEach(match => {
-            console.log('match:')
-            console.log('stedium- '+match[0].stedium)
-            console.log('   home: '+match[0].name)
-            console.log('   away: '+match[1].name)
             matches.push({home_team: match[0].id,away_team: match[1].id,date: date,stedium: match[0].stedium, refereesArray:[], eventLogArray:[] });
             returnMatches.push({home_team: match[0].name,away_team: match[1].name,date: date,stedium: match[0].stedium});
         });
     });
 
+    // creating matches in the DB
     let matchesIDs = await soccerDB.createMatches(matches);
 
+    // creating the season in the DB
     let season = {name: seasonName,league: league.id,matchesScheduleArray: matchesIDs,year: year,refereesArray:[]};
-
     let created = await soccerDB.createSeason(season);
 
     if(!created){
@@ -157,7 +151,6 @@ async function schedule(leagueName, seasonName){
     }
 }
 
-
-
+// expose the function that needs access outside the file (for the service layer)
 exports.schedule = schedule;
 
