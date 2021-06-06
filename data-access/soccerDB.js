@@ -17,6 +17,7 @@ async function makeDb () {
   return CLIENT.db(DB_NAME);
 }
 
+// returns the league id, policy, teams by reciving the league name
 async function getLeagueDetails(leagueName){
   const DB = await makeDb();
   const result = await DB.collection("leagues").find({name:leagueName});
@@ -27,6 +28,18 @@ async function getLeagueDetails(leagueName){
   return {id:leagueObj[0]._id,policy:leagueObj[0].matchSchedulingPolicy,teams:leagueObj[0].teamsArray};
 }
 
+// returns the league id by reciving the league name
+async function getLeagueIdByName(leagueName){
+  const DB = await makeDb();
+  const result = await DB.collection("leagues").find({name:leagueName});
+  const league = await result.toArray();
+  if (league.length === 0) {
+    return null;
+  }
+  return league[0]._id;
+}
+
+// returns the match policy number of rounds by reciving the policy id
 async function getRoundsPolicy(policyID){
   const DB = await makeDb();
   const result = await DB.collection("MatchSchedulingPolicy").find({_id:policyID});
@@ -37,8 +50,7 @@ async function getRoundsPolicy(policyID){
   return policyObj[0].rounds;
 }
 
-
-
+// creating season in the DB
 async function createSeason(season){
   const DB = await makeDb();
   let seasonObj = new Season(season.name,season.league,season.refereesArray,season.matchesScheduleArray,season.year);
@@ -49,6 +61,51 @@ async function createSeason(season){
   return true;
 }
 
+// searching for the season in the DB by reciving the season name
+async function findSeasonByName(seasonName){
+  const DB = await makeDb();
+    const result = await DB.collection("seasons").find({name:seasonName})
+    const found = await result.toArray();
+    if (found.length === 0) {
+      return false;
+    }
+    return true;
+}
+
+// returns the season object by reciving the season name
+async function getSeasonByName(seasonName){
+  const DB = await makeDb();
+  const result = await DB.collection("seasons").find({name:seasonName})
+  const season = await result.toArray();
+  return season[0];
+}
+
+// check if the league is in the season by reciving season name and league id
+async function checkLeagueInSeasonById(seasonName,leagueID){
+const DB = await makeDb();
+const result = await DB.collection("seasons").find({name:seasonName})
+const season = await result.toArray();
+return season[0].league.equals(leagueID);
+}
+
+// check if the league is in the season by reciving season name and referee id
+async function checkRefereeInSeasonById(seasonName, refereeID){
+const DB = await makeDb();
+const result = await DB.collection("seasons").find({name:seasonName, refereesArray: refereeID})
+const season = await result.toArray();
+if(season.length == 0){
+  return false;
+}
+return true;
+}
+
+// adding referee to the season in the DB by reciving season name and referee id
+async function addRefereeIDtoSeason(seasonName,refereeID){
+  const DB = await makeDb();
+  const result = await DB.collection("seasons").findOneAndUpdate({name:seasonName},{ $push: {refereesArray: refereeID}});
+}
+
+// creating matches in the DB by reciving an array of matches
 async function createMatches(matches){
   const DB = await makeDb();
   let matchesObj = matches.map(match=>new Match(match.home_team,match.away_team,match.date,match.stedium,match.refereesArray,match.eventLogArray));
@@ -59,6 +116,20 @@ async function createMatches(matches){
   return Object.entries(result.insertedIds).map(id=>id[1]);
 }
 
+// change match schedule- date or stedium (or both)
+async function findMatchAndUpdate(matchIDArr,home_team_id,away_team_id,new_date,new_stedium){
+  const DB = await makeDb();
+  const result = await DB.collection("matches").findOneAndUpdate({_id:{$in: matchIDArr},home_team:home_team_id,away_team:away_team_id},{ $set: {date: new_date, stedium:new_stedium}});
+}
+
+// updating the referee in the match by reciving the match id and referee id
+async function updateMatcheReferee(matchID,refID){
+  const DB = await makeDb();
+  const result = await DB.collection("matches").findOneAndUpdate({_id:matchID},{ $set: {refereesArray: [refID]}});
+  return result;
+}
+
+// returns the team id by reciving the team name
 async function getTeamID(teamName){
   const DB = await makeDb();
   const result = await DB.collection("teams").find({name:teamName});
@@ -66,7 +137,7 @@ async function getTeamID(teamName){
   return team[0]._id;
 }
 
-
+// returns the teams names array by reciving the teams ids array
 async function getTeamsName(teamsIDarray){
   const DB = await makeDb();
   const result = await DB.collection("teams").find({_id:{$in: teamsIDarray}});
@@ -74,7 +145,6 @@ async function getTeamsName(teamsIDarray){
   if (teams.length === 0) {
     return null;
   }
-  
   let teamsName = teams.map(function(team){ return {id: team._id,name: team.name, stedium: team.stedium}; });
   return teamsName;
 }
@@ -90,40 +160,27 @@ async function findUserByUserName(username){
     return true;
 }
 
+// find user in the users collection by username and return the password
+async function getPasswordByUserName(username){
+  const DB = await makeDb();
+  const result = await DB.collection("users").find({userName:username})
+  const user = await result.toArray();
+  return user[0].password;
+}
+
+// insert general user to users collection
+async function insertUser(userName, password){
+  const DB = await makeDb();
+  let newUser = new User(userName, password);
+  await DB.collection("users").insertOne(newUser);
+  return true;
+}
+
+// find FAR user in the FARs collection by username and returns boolean answer
 async function findFARuserByUserName(username){
   const DB = await makeDb();
     const result = await DB.collection("FARs").find({userName:username})
     const found = await result.toArray()
-    if (found.length === 0) {
-      return false;
-    }
-    return true;
-}
-
-// async function findRefereeUserByUserName(username){
-//   const DB = await makeDb();
-//     const result = await DB.collection("referees").find({userName:username})
-//     const found = await result.toArray()
-//     if (found.length === 0) {
-//       return false;
-//     }
-//     return true;
-// }
-
-// async function findLeagueByName(name){
-//   const DB = await makeDb();
-//     const result = await DB.collection("leagues").find({name:name})
-//     const found = await result.toArray();
-//     if (found.length === 0) {
-//       return false;
-//     }
-//     return true;
-// }
-
-async function findSeasonByName(name){
-  const DB = await makeDb();
-    const result = await DB.collection("seasons").find({name:name})
-    const found = await result.toArray();
     if (found.length === 0) {
       return false;
     }
@@ -141,73 +198,6 @@ async function getRefereeIdByUserName(username){
   return user[0]._id;
 }
 
-async function getLeagueIdByName(leagueName){
-  const DB = await makeDb();
-  const result = await DB.collection("leagues").find({name:leagueName});
-  const league = await result.toArray();
-  if (league.length === 0) {
-    return null;
-  }
-  return league[0]._id;
-}
-
-async function getSeasonByName(seasonName){
-  const DB = await makeDb();
-  const result = await DB.collection("seasons").find({name:seasonName})
-  const season = await result.toArray();
-  return season[0];
-}
-
-async function findMatchAndUpdate(matchIDArr,home_team_id,away_team_id,new_date,new_stedium){
-  const DB = await makeDb();
-  const result = await DB.collection("matches").findOneAndUpdate({_id:{$in: matchIDArr},home_team:home_team_id,away_team:away_team_id},{ $set: {date: new_date, stedium:new_stedium}});
-}
-
-async function updateMatcheReferee(matchID,refID){
-  const DB = await makeDb();
-  const result = await DB.collection("matches").findOneAndUpdate({_id:matchID},{ $set: {refereesArray: [refID]}});
-  return result;
-}
-
-async function addRefereeIDtoSeason(seasonName,refereeID){
-    const DB = await makeDb();
-    const result = await DB.collection("seasons").findOneAndUpdate({name:seasonName},{ $push: {refereesArray: refereeID}});
-    // check if not working?
-  }
-
-async function checkLeagueInSeasonById(seasonName,leagueID){
-  const DB = await makeDb();
-  const result = await DB.collection("seasons").find({name:seasonName})
-  const season = await result.toArray();
-  return season[0].league.equals(leagueID);
-}
-
-async function checkRefereeInSeasonById(seasonName, refereeID){
-  const DB = await makeDb();
-  const result = await DB.collection("seasons").find({name:seasonName, refereesArray: refereeID})
-  const season = await result.toArray();
-  if(season.length == 0){
-    return false;
-  }
-  return true;
-}
-
-// find user in the users collection by username and return the password
-async function getPasswordByUserName(username){
-    const DB = await makeDb();
-    const result = await DB.collection("users").find({userName:username})
-    const user = await result.toArray();
-    return user[0].password;
-}
-
-// insert general user to users collection
-async function insertUser(userName, password){
-    const DB = await makeDb();
-    let newUser = new User(userName, password);
-    await DB.collection("users").insertOne(newUser);
-    return true;
-}
-
 // insert referee user to referees collection
 async function insertRefereeUser(userName, password, firstName, lastName, refType){
     const DB = await makeDb();
@@ -215,14 +205,6 @@ async function insertRefereeUser(userName, password, firstName, lastName, refTyp
     await DB.collection("referees").insertOne(newReferee);
     return true;
 }
-
-// async function main() {
-//   var quote =await checkLeagueInSeasonById("2021", "60af7cf79c0c05a79d219c59");
-
-//   console.log('3', quote);
-// }
-// main();
-
 
 
 // expose the functions that needs access outside the file (for the domain layer)
@@ -232,8 +214,6 @@ exports.getPasswordByUserName = getPasswordByUserName;
 exports.insertUser = insertUser;
 exports.insertRefereeUser = insertRefereeUser;
 exports.getRefereeIdByUserName = getRefereeIdByUserName;
-// exports.findRefereeUserByUserName = findRefereeUserByUserName;
-// exports.findLeagueByName = findLeagueByName;
 exports.findSeasonByName = findSeasonByName;
 exports.getLeagueIdByName = getLeagueIdByName;
 exports.getSeasonByName = getSeasonByName;
