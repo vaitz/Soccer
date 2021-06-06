@@ -9,12 +9,9 @@ async function findFARbyUserName(userName){
     let ans = await soccerDB.findFARuserByUserName(userName);
     if(!ans){
         return false;
-    }
-
-    else{
+    }else{
         return true;
     }  
-
 }
 
 // expose the function that needs access outside the file (for the service layer)

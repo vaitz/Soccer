@@ -1,3 +1,4 @@
+// the Match entity have the fields: home_team, away_team, date, stedium, refereesArray, eventLogArray
 module.exports = class Match{
     constructor(home_team, away_team, date, stedium, refereesArray, eventLogArray){
         this.home_team = home_team;

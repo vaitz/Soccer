@@ -1,8 +1,6 @@
 const soccerDB = require('../data-access/SoccerDB');
 const bcrypt = require("bcrypt");
 
-
-
 async function login(userName, password){
     // check fields exists
     if(!userName || !password){
@@ -16,6 +14,7 @@ async function login(userName, password){
         return "User not exists in the DB.";
     }
 
+    // getting the password that in the DB and compare it to the password inserted by the user
     let passwordDB = await soccerDB.getPasswordByUserName(userName);
     if(!bcrypt.compareSync(password, passwordDB)){
         console.log("Username or Password incorrect");

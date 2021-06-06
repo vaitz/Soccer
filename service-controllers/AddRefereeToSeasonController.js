@@ -20,15 +20,16 @@ const FARauth = require('../domain-usecases/FARauth');
 router.post('',async (req, res) => {
     // extract fields from the request body
     let { refereeUserName, league, season } = req.body;
+
+    // call the domain layer
     let msg = await AddRefereeToSeason.addRefereeToSeason(refereeUserName, league, season);
 
+    // return status code
     if(msg == "Referee added to the season successfully"){
         res.status(201).send({ message: msg, success: true });
     }else{
         res.status(400).send({ message: msg, success: false });
     }
-
-
 });
 
 module.exports = router;

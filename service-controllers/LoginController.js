@@ -4,23 +4,24 @@ const login = require('../domain-usecases/Login')
 
 router.post('',async (req, res) => {
     try{
-    // check that username exists
-    let { userName, password } = req.body;
-    const msg = await login.login(userName, password);
-    
-    massege_code = msg.substring(0, msg.indexOf(','))
-    if (massege_code == 200){
-        // Set cookie
-        req.session.userName = userName;
-        // return cookie
-        res.status(200).send({ message: msg.substring(msg.indexOf(',')+2), success: true });
-    }
-      
-    else {
-      res
-        .status(401)
-        .send({ message: msg, success: false });
-    }
+        // check that username exists
+        let { userName, password } = req.body;
+
+        // call the domain layer
+        const msg = await login.login(userName, password);
+        
+        // return status code
+        massege_code = msg.substring(0, msg.indexOf(','))
+        if (massege_code == 200){
+            // Set cookie
+            req.session.userName = userName;
+            // return cookie
+            res.status(200).send({ message: msg.substring(msg.indexOf(',')+2), success: true });
+        }else {
+            res
+            .status(401)
+            .send({ message: msg, success: false });
+        }
     }catch(error){
         throw error;
     }

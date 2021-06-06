@@ -6,22 +6,25 @@ async function schedule(seasonName){
             return "Missing field, make sure you entered the season name.";
         }
 
+        // get the season object
         let season = await soccerDB.getSeasonByName(seasonName);
         if(season == null){
             return "season not exists.";
         }
 
+        // get the season referees array
         let refArr = season.refereesArray;
         if(refArr.length == 0){
             return "referees not exists in season.";
         }
 
-
+        // get the season matches array
         let matchArr = season.matchesScheduleArray;
         if(matchArr.length == 0){
             return "matches not exists in season.";
         }
 
+        // schedule referees in matches
         let i = -1;
         let ans = await matchArr.forEach(async function(matchID) {
             i += 1;

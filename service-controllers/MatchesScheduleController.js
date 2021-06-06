@@ -20,8 +20,11 @@ const FARauth = require('../domain-usecases/FARauth');
 router.post('',async (req, res) => {
     // extract fields from the request body
     let { league, season } = req.body;
+
+    // call the domain layer
     let ans = await MatchesSchedule.schedule(league, season);
     let msg = ans.msg;
+    // return status code
     if(msg.substring(0, msg.indexOf(',')) == 201){
         res.status(201).send({ message: msg.substring(msg.indexOf(',')+2),schedule: ans.schedule, success: true });
     }
