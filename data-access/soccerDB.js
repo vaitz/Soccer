@@ -37,6 +37,8 @@ async function getRoundsPolicy(policyID){
   return policyObj[0].rounds;
 }
 
+
+
 async function createSeason(season){
   const DB = await makeDb();
   let seasonObj = new Season(season.name,season.league,season.refereesArray,season.matchesScheduleArray,season.year);
@@ -56,6 +58,14 @@ async function createMatches(matches){
   }
   return Object.entries(result.insertedIds).map(id=>id[1]);
 }
+
+async function getTeamID(teamName){
+  const DB = await makeDb();
+  const result = await DB.collection("teams").find({name:teamName});
+  const team = await result.toArray();
+  return team[0]._id;
+}
+
 
 async function getTeamsName(teamsIDarray){
   const DB = await makeDb();
@@ -141,13 +151,23 @@ async function getLeagueIdByName(leagueName){
   return league[0]._id;
 }
 
-// async function getSeasonIdByName(seasonName){
-//   const DB = await makeDb();
-//   const result = await DB.collection("seasons").find({name:seasonName})
-//   const season = await result.toArray();
-//   console.log(season[0]._id);
-//   return season[0]._id;
-// }
+async function getSeasonByName(seasonName){
+  const DB = await makeDb();
+  const result = await DB.collection("seasons").find({name:seasonName})
+  const season = await result.toArray();
+  return season[0];
+}
+
+async function findMatchAndUpdate(matchIDArr,home_team_id,away_team_id,new_date,new_stedium){
+  const DB = await makeDb();
+  const result = await DB.collection("matches").findOneAndUpdate({_id:{$in: matchIDArr},home_team:home_team_id,away_team:away_team_id},{ $set: {date: new_date, stedium:new_stedium}});
+}
+
+async function updateMatcheReferee(matchID,refID){
+  const DB = await makeDb();
+  const result = await DB.collection("matches").findOneAndUpdate({_id:matchID},{ $set: {refereesArray: [refID]}});
+  return result;
+}
 
 async function addRefereeIDtoSeason(seasonName,refereeID){
     const DB = await makeDb();
@@ -166,7 +186,6 @@ async function checkRefereeInSeasonById(seasonName, refereeID){
   const DB = await makeDb();
   const result = await DB.collection("seasons").find({name:seasonName, refereesArray: refereeID})
   const season = await result.toArray();
-  console.log(season);
   if(season.length == 0){
     return false;
   }
@@ -217,7 +236,7 @@ exports.getRefereeIdByUserName = getRefereeIdByUserName;
 // exports.findLeagueByName = findLeagueByName;
 exports.findSeasonByName = findSeasonByName;
 exports.getLeagueIdByName = getLeagueIdByName;
-// exports.getSeasonIdByName = getSeasonIdByName;
+exports.getSeasonByName = getSeasonByName;
 exports.checkLeagueInSeasonById = checkLeagueInSeasonById;
 exports.addRefereeIDtoSeason = addRefereeIDtoSeason;
 exports.getLeagueDetails = getLeagueDetails;
@@ -226,3 +245,6 @@ exports.getRoundsPolicy = getRoundsPolicy;
 exports.createMatches = createMatches;
 exports.createSeason =createSeason;
 exports.checkRefereeInSeasonById = checkRefereeInSeasonById;
+exports.updateMatcheReferee = updateMatcheReferee;
+exports.getTeamID = getTeamID;
+exports.findMatchAndUpdate = findMatchAndUpdate;

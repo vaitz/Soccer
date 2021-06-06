@@ -14,5 +14,8 @@ contains the following layers:
 ## Use Cases
 The use cases we implement:
 * Referee Register
+* Add Referee To Season
 * Matches Scheduling
+* Referees Schedule
+* Reschedule Match
 * Login Procedure

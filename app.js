@@ -46,8 +46,15 @@ app.use("/login", loginController);
 const AddRefereeToSeasonController = require('./service-controllers/AddRefereeToSeasonController');
 app.use("/addRefereeToSeason", AddRefereeToSeasonController);
 
+
+const RefereeScheduleController = require('./service-controllers/RefereeScheduleController');
+app.use("/scheduleRefereesToSeason", RefereeScheduleController);
+
 const MatchesScheduleController = require('./service-controllers/MatchesScheduleController');
 app.use("/scheduleMatchesSeasonInLeague", MatchesScheduleController);
+
+const RecheduleMatchController = require('./service-controllers/RecheduleMatchController');
+app.use("/rescheduleMatch", RecheduleMatchController);
 
 //if non of the above:
 app.use((req, res) => {
@@ -61,9 +68,9 @@ app.use(function (err, req, res, next) {
     .send({ message: err.message || "Internal Server Error", success: false });
 });
 
-// const server = app.listen(port, () => {
-//   console.log(`Server listen on port ${port}`);
-// });
+const server = app.listen(port, () => {
+  console.log(`Server listen on port ${port}`);
+});
 
 process.on("SIGINT", function () {
   if (server) {

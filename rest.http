@@ -28,8 +28,17 @@ content-type: application/json
 {
     "refereeUserName": "may",
     "league": "league1",
-    "season": "league1_2021"
+    "season": "league1_2020"
 }
+
+###
+POST http://localhost:3000/scheduleRefereesToSeason
+content-type: application/json
+
+{
+    "season": "league1_2020"
+}
+
 
 ###
 POST http://localhost:3000/scheduleMatchesSeasonInLeague
@@ -39,3 +48,13 @@ content-type: application/json
     "season": "league1_2020"
 }
 
+###
+POST http://localhost:3000/rescheduleMatch
+content-type: application/json
+{
+    "season": "league1_2020",
+    "home_team": "hapoel tel aviv",
+    "away_team": "macabi haifa",
+    "new_date": "2020-08-21T20:00:00.000+00:00",
+    "new_stedium": "blumfield"
+}
