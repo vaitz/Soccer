@@ -4,7 +4,7 @@ const request = supertest(app)
 
 
 describe('Rechedule Match acceptence tests', () => {
-
+    //TC27
     test('Rechedule Match succeed', async () => {
         await request.post('/rescheduleMatch')
             .send({
@@ -16,7 +16,7 @@ describe('Rechedule Match acceptence tests', () => {
             })
             .expect(200)
     });
-
+    //TC28
     test('Rechedule Match succeed', async () => {
         await request.post('/rescheduleMatch')
             .send({
