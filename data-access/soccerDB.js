@@ -1,3 +1,4 @@
+// this is the file that access directly to mongoDB
 const Referee = require('./entities/Referee');
 const Season = require('./entities/Season');
 const Match = require('./entities/Match');
