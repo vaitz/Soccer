@@ -43,6 +43,7 @@ content-type: application/json
 ###
 POST http://localhost:3000/scheduleMatchesSeasonInLeague
 content-type: application/json
+
 {
     "league": "league1",
     "season": "league1_2020"
@@ -51,6 +52,7 @@ content-type: application/json
 ###
 POST http://localhost:3000/rescheduleMatch
 content-type: application/json
+
 {
     "season": "league1_2020",
     "home_team": "hapoel tel aviv",
