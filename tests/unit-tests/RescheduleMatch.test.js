@@ -1,4 +1,4 @@
-const { reschedule } = require('../../domain-usecases/RecheduleMatch');
+const { reschedule } = require('../../domain-usecases/RescheduleMatch');
 
 
 
@@ -11,15 +11,6 @@ test('missing fields', async () =>
 });
 
 
-// test('test season not exists', async () =>
-// {
-//     const result = await reschedule("hapoel tel aviv",
-//     "macabi haifa",
-//     "league1_2020",
-//     "2020-08-21T20:00:00.000+00:00",
-//     "blumfield");
-//     expect(result).toBe("Successfully reschedule the matche.");
-// });
 
 
 });

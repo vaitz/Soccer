@@ -3,15 +3,9 @@ const app = require('../../app')
 const request = supertest(app)
 
 
-<<<<<<< HEAD:tests/acceptence-tests/RecheduleMatch.test.js
-describe('Reschedule Match acceptence tests', () => {
-
-    test('Reschedule Match succeed', async () => {
-=======
 describe('Rechedule Match acceptence tests', () => {
     //TC27
     test('Rechedule Match succeed', async () => {
->>>>>>> origin/tests:tests/acceptence-tests/RescheduleMatch.test.js
         await request.post('/rescheduleMatch')
             .send({
                 "season": "league1_2020",
@@ -22,13 +16,8 @@ describe('Rechedule Match acceptence tests', () => {
             })
             .expect(200)
     });
-<<<<<<< HEAD:tests/acceptence-tests/RecheduleMatch.test.js
-
-    test('Reschedule Match succeed', async () => {
-=======
     //TC28
     test('Rechedule Match succeed', async () => {
->>>>>>> origin/tests:tests/acceptence-tests/RescheduleMatch.test.js
         await request.post('/rescheduleMatch')
             .send({
                 "season": "league1_2021",

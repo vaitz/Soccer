@@ -1,14 +1,8 @@
-<<<<<<< HEAD:tests/integration-tests/RecheduleMatchInDB.test.js
+
 const { reschedule } = require('../../domain-usecases/RescheduleMatch');
-describe('RescheduleMatchInDB.test unit tests', () => {
-    
-    test('test season not exists', async () =>
-=======
-const { reschedule } = require('../../domain-usecases/RecheduleMatch');
 describe('RecheduleMatchInDB.test unit tests', () => {
     //TC25
     test('season not exists', async () =>
->>>>>>> origin/tests:tests/integration-tests/RescheduleMatchInDB.test.js
     {
         const result = await reschedule("demo_not_exists", "hapoel tel aviv",
         "macabi haifa",
