@@ -1,8 +1,8 @@
-const { reschedule } = require('../../domain-usecases/RecheduleMatch');
+const { reschedule } = require('../../domain-usecases/RescheduleMatch');
 
 
 
-describe('Rechedule Match unit tests', () => {
+describe('Reschedule Match unit tests', () => {
 test('test missing fields', async () =>
 {
     const result = await reschedule("");

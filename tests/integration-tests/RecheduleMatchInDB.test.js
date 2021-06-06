@@ -1,5 +1,5 @@
-const { reschedule } = require('../../domain-usecases/RecheduleMatch');
-describe('RecheduleMatchInDB.test unit tests', () => {
+const { reschedule } = require('../../domain-usecases/RescheduleMatch');
+describe('RescheduleMatchInDB.test unit tests', () => {
     
     test('test season not exists', async () =>
     {

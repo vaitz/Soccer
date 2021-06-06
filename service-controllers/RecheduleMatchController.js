@@ -1,6 +1,6 @@
 var express = require("express");
 var router = express.Router();
-const RecheduleMatch = require('../domain-usecases/RecheduleMatch');
+const RescheduleMatch = require('../domain-usecases/RescheduleMatch');
 const FARauth = require('../domain-usecases/FARauth');
 
 // //authentication to all incoming requests
@@ -22,7 +22,7 @@ router.post('',async (req, res) => {
     let { home_team,away_team, season, new_date, new_stadium} = req.body;
 
     // call the domain layer
-    let msg = await RecheduleMatch.reschedule(home_team,away_team, season, new_date, new_stadium);
+    let msg = await RescheduleMatch.reschedule(home_team,away_team, season, new_date, new_stadium);
     
     // return status code
     if(msg == "Successfully reschedule the matche."){
