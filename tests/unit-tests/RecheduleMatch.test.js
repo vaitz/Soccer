@@ -10,7 +10,7 @@ test('test missing fields', async () =>
 });
 
 
-test('test season not exists', async () =>
+test('Successfully reschedule the matche', async () =>
 {
     const result = await reschedule("hapoel tel aviv",
     "macabi haifa",
