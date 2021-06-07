@@ -10,6 +10,11 @@
     "testWatch": "jest --watch --detectOpenHandles",
     "testCover": "jest --coverage"
   },
+  "husky":{
+    "hooks":{
+      "pre-commit": "jest"
+    }
+  },
   "author": "Tom",
   "license": "ISC",
   "dependencies": {
@@ -27,6 +32,7 @@
     "morgan": "^1.10.0"
   },
   "devDependencies": {
+    "husky": "^6.0.0",
     "jest": "^27.0.3",
     "nodemon": "^2.0.7",
     "supertest": "^6.1.3",
