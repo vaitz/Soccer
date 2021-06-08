@@ -11,7 +11,7 @@
     "testCover": "jest --coverage"
   },
   "husky":{
-    "hooks":{
+    "hooks": {
       "pre-commit": "jest --coverage",
       "pre-push":"jest"
     }
