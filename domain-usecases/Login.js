@@ -3,6 +3,9 @@ const bcrypt = require("bcrypt");
 
 async function login(userName, password){
     // check fields exists
+    try {
+
+        // return "regression test try1";
     if(!userName || !password){
         return "Missing fields, make sure you entered the following: userName, password.";
     }
@@ -21,6 +24,10 @@ async function login(userName, password){
         return "Username or Password incorrect";
     }else{
         return "200, User login successfully.";
+        }
+        
+    } catch (error) {
+        
     }
 }
 

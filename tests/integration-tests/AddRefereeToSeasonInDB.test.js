@@ -30,7 +30,7 @@ test('season not in the league', async () =>
 //TC11   
 test('referee already in', async () =>
 {
-    const result = await addRefereeToSeason('almogtry1', 'league1','league1_2020');
+    const result = await addRefereeToSeason('tom12', 'league1','league1_2020');
     expect(result).toBe("The referee already in the season.");
 });
 
