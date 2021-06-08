@@ -1,10 +1,11 @@
 const soccerDB = require('../data-access/SoccerDB');
 const bcrypt = require("bcrypt");
 
+// regression test 2
 async function register(userName, password, firstName, lastName){
     // check fields exists
     if(!userName || !password || !firstName || !lastName){
-        return "Missing fields, make sure you entered the following: userName, password, firstName, lastName, refType.";
+        return "Missing fields, make sure you entered the following: userName, password, firstName, lastName.";
     }
 
     // check if the password are according to the rules
@@ -19,14 +20,14 @@ async function register(userName, password, firstName, lastName){
         parseInt(process.env.bcrypt_saltRounds)
     );
 
-    // check if referee user exists 
+    // check if fan user exists 
     let exists = await soccerDB.findUserByUserName(userName);
     if(exists){
         // console.log('User already exists in the DB');
         return "User already exists in the DB.";
     }
 
-    // // add referee to DB
+    // // add fan to DB
     // await soccerDB.insertFanUser(userName, hash_password, firstName, lastName);
     // await soccerDB.insertUser(userName, hash_password);
     // console.log('Referee added to the DB');
