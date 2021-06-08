@@ -13,7 +13,7 @@
   "husky":{
     "hooks": {
       "pre-commit": "jest --coverage",
-      "pre-push":"jest"
+      "pre-push": "jest"
     }
   },
   "author": "Tom",
