@@ -10,7 +10,7 @@
     "testWatch": "jest --watch --detectOpenHandles",
     "testCover": "jest --coverage"
   },
-  "husky": {
+  "husky":{
     "hooks": {
       "pre-commit": "jest --coverage",
       "pre-push": "jest"
