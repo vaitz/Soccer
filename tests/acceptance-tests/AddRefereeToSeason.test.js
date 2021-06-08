@@ -7,7 +7,7 @@ describe('add referee to season acceptance test', () => {
     test('adding success', async () => {
         await request.post('/addRefereeToSeason')
             .send({
-                "refereeUserName": "may",
+                "refereeUserName": "mayo",
                 "league": "league1",
                 "season": "league1_2020"
             })
