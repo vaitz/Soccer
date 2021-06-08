@@ -51,8 +51,8 @@ app.use("/scheduleRefereesToSeason", RefereeScheduleController);
 const MatchesScheduleController = require('./service-controllers/MatchesScheduleController');
 app.use("/scheduleMatchesSeasonInLeague", MatchesScheduleController);
 
-const RecheduleMatchController = require('./service-controllers/RecheduleMatchController');
-app.use("/rescheduleMatch", RecheduleMatchController);
+const RescheduleMatchController = require('./service-controllers/RescheduleMatchController');
+app.use("/rescheduleMatch", RescheduleMatchController);
 
 // if non of the above:
 app.use((req, res) => {
@@ -68,9 +68,9 @@ app.use(function (err, req, res, next) {
 });
 
 // server listening
-const server = app.listen(port, () => {
-  console.log(`Server listen on port ${port}`);
-});
+// const server = app.listen(port, () => {
+//   console.log(`Server listen on port ${port}`);
+// });
 
 process.on("SIGINT", function () {
   if (server) {
