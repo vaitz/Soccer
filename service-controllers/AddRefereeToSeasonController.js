@@ -18,6 +18,7 @@ const FARauth = require('../domain-usecases/FARauth');
 // // RFA
 
 router.post('',async (req, res) => {
+    try{
     // extract fields from the request body
     let { refereeUserName, league, season } = req.body;
 
@@ -30,6 +31,10 @@ router.post('',async (req, res) => {
     }else{
         res.status(400).send({ message: msg, success: false });
     }
+}
+catch(error){
+    throw error
+}
 });
 
 module.exports = router;

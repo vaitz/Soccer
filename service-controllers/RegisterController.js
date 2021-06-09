@@ -3,7 +3,7 @@ var router = express.Router();
 const RefereeRegister = require('../domain-usecases/RefereeRegister');
 const FanRegister = require('../domain-usecases/FanRegister');
 
-router.post('',async (req, res) => {
+router.post('',async (req, res, next) => {
     // extract fields from the request body
     try{
         let { userName, password, firstName, lastName, accountType } = req.body;
@@ -37,7 +37,7 @@ router.post('',async (req, res) => {
         // for later- other type of user registers
     }
     catch(error){
-        throw error;
+        next(error)
     }
 
 });
