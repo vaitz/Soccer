@@ -17,7 +17,8 @@ const FARauth = require('../domain-usecases/FARauth');
 //   });
 // // RFA
 
-router.post('',async (req, res) => {
+router.post('',async (req, res,next) => {
+    try{
     // extract fields from the request body
     let { home_team,away_team, season, new_date, new_stadium} = req.body;
 
@@ -29,6 +30,10 @@ router.post('',async (req, res) => {
         res.status(200).send({ message: msg, success: true });
     }else{
         res.status(400).send({ message: msg, success: false });
+    }
+}
+    catch(error){
+        next(error);
     }
 });
 

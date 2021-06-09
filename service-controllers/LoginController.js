@@ -2,7 +2,7 @@ var express = require("express");
 var router = express.Router();
 const login = require('../domain-usecases/Login')
 
-router.post('',async (req, res) => {
+router.post('',async (req, res, next) => {
     try{
         // check that username exists
         let { userName, password } = req.body;
@@ -23,7 +23,8 @@ router.post('',async (req, res) => {
             .send({ message: msg, success: false });
         }
     }catch(error){
-        throw error;
+        console.log(error)
+        next(error);
     }
 });
 
