@@ -1,6 +1,7 @@
 const supertest = require('supertest')
 const app = require('../../app')
 const request = supertest(app)
+let cookie = null;
 
 beforeAll(async () => {
     res = await request.post('/login').send({
