@@ -12,10 +12,10 @@ contains the following layers:
 3. Data Access- incharge of the access to the database and contains the entities.
 
 ## Use Cases
-The use cases we implement:
+The usecases we implement:
 * Referee Register
 * Add Referee To Season
-* Matches Scheduling
 * Referees Schedule
+* Matches Scheduling
 * Reschedule Match
 * Login Procedure
