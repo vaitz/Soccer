@@ -2,7 +2,7 @@
 
 This is the backend part of the web application.
 
-Using NODE.JS + EXPRESS.JS, MongoDB.
+Using NODE.JS + EXPRESS.JS, MongoDB and Jest.
 
 ## Architecture
 contains the following layers:
