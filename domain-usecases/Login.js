@@ -3,9 +3,6 @@ const bcrypt = require("bcrypt");
 
 async function login(userName, password){
     
-
-    // // regression test 1
-    // return "regression test try1";
     // check fields exists
     if(!userName || !password){
         return "Missing fields, make sure you entered the following: userName, password.";
