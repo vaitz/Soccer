@@ -20,7 +20,7 @@ describe('add referee to season acceptance test', () => {
     test('adding success', async () => {
         await request.post('/addRefereeToSeason').set('Cookie', cookie)
             .send({
-                "refereeUserName": "almogtry4996.652214589334",
+                "refereeUserName": "almogtry7561.606274760686",
                 "league": "league1",
                 "season": "league1_2020"
             })

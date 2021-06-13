@@ -2,7 +2,9 @@ const soccerDB = require('../data-access/SoccerDB');
 const bcrypt = require("bcrypt");
 const constant = require("../constant/constant")
 
-async function register(userName, password, firstName, lastName, refType){
+async function register(userName, password, firstName, lastName, refType) {
+    
+
     // check fields exists
     if(!userName || !password || !firstName || !lastName || !refType){
         return "Missing fields, make sure you entered the following: userName, password, firstName, lastName, refType.";
@@ -35,7 +37,10 @@ async function register(userName, password, firstName, lastName, refType){
     await soccerDB.insertRefereeUser(userName, hash_password, firstName, lastName, refType);
     await soccerDB.insertUser(userName, hash_password);
     console.log('Referee added to the DB');
+    
     return "201, Referee added to the DB";
+  //  return "regression test try1";
+
     
 
 }
