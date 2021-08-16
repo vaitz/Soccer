@@ -6,7 +6,7 @@ const User = require('./entities/User');
 const {MongoClient} = require('mongodb');
 
 // constants for the DB connection
-const URI = "mongodb+srv://tom:1234@soccersystem.7wihy.mongodb.net/test?authSource=admin&replicaSet=atlas-11jrfq-shard-0&readPreference=primary&appname=MongoDB%20Compass&ssl=true"
+// const URI = "mongodb+srv://tom:1234@soccersystem.7wihy.mongodb.net/test?authSource=admin&replicaSet=atlas-11jrfq-shard-0&readPreference=primary&appname=MongoDB%20Compass&ssl=true"
 const DB_NAME = "soccerSystemDB";
 const CLIENT = new MongoClient(URI, { useNewUrlParser: true, useUnifiedTopology: true  })
 
